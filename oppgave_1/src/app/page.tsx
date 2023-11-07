@@ -21,7 +21,7 @@ export default async function Home() {
         <Answer />
       </Tasks>
       <TaskText text={"Hva blir resultatet av regneoperasjonen?"} />
-      <Progress />
+      <Progress tasks={result.data}/>
     </main>
   )
 }
