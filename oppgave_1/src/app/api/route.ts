@@ -10,6 +10,24 @@ const tasks: Task[] = [
     type: "add",
     data: "9|4",
   },
+    {
+      id: "123",
+      text: "Skriv resultatet av regneoperasjonen",
+      data: "9|2",
+      type: "add",
+    },
+    {
+      id: "234",
+      text: "Skriv resultatet av regneoperasjonen",
+      data: "3|2",
+      type: "add",
+    },
+    {
+      id: "356",
+      text: "Skriv resultatet av regneoperasjonen",
+      data: "3|2",
+      type: "multiply",
+    },
 ]
 
 // TODO: Denne skal brukes til å "samle" svarene (om du ikke bruker database)
