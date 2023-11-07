@@ -20,9 +20,9 @@ export default function Answer() {
       <label htmlFor="answer">Svar</label>
       <input
         name="answer"
-        type="text"
+        type="number"
         placeholder="Sett svar her"
-        onInput={update}
+        onChange={update}
       />
       {9 + 2 === answer ? "Bra jobbet!" : null}
       <button onClick={send}>Send</button>
