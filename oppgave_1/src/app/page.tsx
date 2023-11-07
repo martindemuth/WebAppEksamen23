@@ -1,24 +1,25 @@
 import Answer from "@/components/Answer"
 import Header from "@/components/Header"
 import Progress from "@/components/Progress"
-import Task from "@/components/Task"
+//import Task from "@/components/Task"
+import { type Task } from "@/types"
 import Tasks from "@/components/Tasks"
 import TaskText from "@/components/Text"
 
+
 export default async function Home() {
-  const response = await fetch("http://localhost:3002/api/restapi", {
+  // TODO: Try/catch
+  const response = await fetch("http://localhost:3000/api", {
     method: "get",
   })
-  const result = await response.json()
+  const result = (await response.json()) as {success: boolean, data: Task[]}
 
   return (
     <main>
-      {JSON.stringify(result)}
       <Header />
-      <Tasks>
+      <Tasks tasks={result.data}>
         <Answer />
       </Tasks>
-      <Task />
       <TaskText text={"Hva blir resultatet av regneoperasjonen?"} />
       <Progress />
     </main>
