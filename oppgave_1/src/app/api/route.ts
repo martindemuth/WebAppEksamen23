@@ -9,24 +9,28 @@ const tasks: Task[] = [
     text: "Skriv resultatet av regneoperasjonen",
     type: "add",
     data: "9|4",
+    tries: 3,
   },
     {
       id: "123",
       text: "Skriv resultatet av regneoperasjonen",
       data: "9|2",
       type: "add",
+      tries: 3,
     },
     {
       id: "234",
       text: "Skriv resultatet av regneoperasjonen",
       data: "3|2",
       type: "add",
+      tries: 3,
     },
     {
       id: "356",
       text: "Skriv resultatet av regneoperasjonen",
       data: "3|2",
       type: "multiply",
+      tries: 3,
     },
 ]
 
