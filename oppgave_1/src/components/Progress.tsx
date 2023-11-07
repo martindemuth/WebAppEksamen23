@@ -8,15 +8,15 @@ import { type Task } from "@/types"
 export default function Progress(props: { tasks: Task[] }) {
   const [taskIndex, setTaskIndex] = useState(0)
   // const [currentTask, setCurrentTask] = useState(props.tasks[taskIndex])
+  
+  // Try/Catch - håndter index utenfor array
   const currentTask = props.tasks[taskIndex]
   
 
   const next = (event: MouseEvent<HTMLButtonElement>) => {
     console.log(event)
     setTaskIndex((prevIndex) => prevIndex + 1)
-    // setCurrentTask(props.tasks[taskIndex])
-
-    
+    // setCurrentTask(props.tasks[taskIndex]) 
   }
 
   const prev = (event: MouseEvent<HTMLButtonElement>) => {
