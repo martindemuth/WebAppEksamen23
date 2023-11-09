@@ -12,7 +12,6 @@ export default async function Home() {
   // TODO: Try/catch
   const response = await fetch(`http://localhost:3000/api/`, {
     method: "GET",
-    cache: "no-store"
   })
   const result = (await response.json()) as {success: boolean, data: Task[]}
   
