@@ -3,14 +3,14 @@
 export default function useAnswer () {
     const calculateExpression = (type: String, operand1: number, operand2: number) => {
         switch (type) {
-            case "+":
+            case "add":
                 return operand1 + operand2
-            case "-":
+            case "subtract":
                 return operand1 - operand2
-            case "/":
-                return operand1 * operand2
-            case "*": 
+            case "divide":
                 return operand1 / operand2
+            case "multiply": 
+                return operand1 * operand2
         }
     }
     return {calculateExpression}
