@@ -1,3 +1,4 @@
+"use client"
 import useTask from "@/hooks/useTask";
 import { Task } from "@/types";
 import { ReactNode, createContext, useContext, useState } from "react";
