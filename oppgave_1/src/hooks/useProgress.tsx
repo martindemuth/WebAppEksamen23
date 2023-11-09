@@ -2,17 +2,19 @@ import { useState } from "react"
 
 import { type Task } from "@/types"
 
-export default function useProgress({ tasks }: { tasks: Task[] }) {
-  const [count, setCount] = useState(0)
-  const current = tasks[count]
+export default function useProgress(tasks: Task[]) {
+  const [taskIndex, setTaskIndex] = useState(0)
+    const currentTask = tasks[taskIndex]
+    const isFinalTask = taskIndex >= (tasks.length - 1)
+    const isFirstTask = taskIndex === 0
 
   // TODO: Try/catch - Håndter index utenfor array
   const next = () => {
-    setCount((prevCount) => prevCount + 1)
+    setTaskIndex((prevIndex) => prevIndex + 1)
   }
   const prev = () => {
-    setCount((prevCount) => prevCount - 1)
+    setTaskIndex((prevIndex) => prevIndex - 1)
   }
 
-  return { count, current, next, prev }
+  return { taskIndex, currentTask, next, prev, isFirstTask, isFinalTask }
 }

@@ -1,11 +1,12 @@
-"use client"
+import useProgress from "@/hooks/useProgress";
 import useTask from "@/hooks/useTask";
 import { Task } from "@/types";
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 
 type TaskContextType = {
     getTasks: (count: number) => void
-    stepper: (action: "next" | "prev") => void
+    next: () => void
+    prev: () => void
     currentTask: Task
     tasks: Task[]
     isFirstTask: boolean
@@ -14,32 +15,36 @@ type TaskContextType = {
 
 const TaskContext = createContext<TaskContextType | undefined>(undefined)
 
-export default function TaskProvider(props: {
+export const TaskProvider = (props: {
     children: ReactNode
     url: string
-}){
+}) => {
+    
+    useEffect(() => {
+        getTasks(10)
+    }, [])
+
+
     const {children, url} = props
 
     const [tasks, setTasks] = useState<Task[]>([])
 
-    const {currentTask, handleStep, isFirstTask, isFinalTask} = useTask(tasks)
-
-    useEffect(() => {
-        getTasks(10)
-    }, [])
+    
+    const {currentTask, next, prev, isFirstTask, isFinalTask} = useProgress(tasks)
+    
 
     const getTasks = async (count: number) => {
         const response = await fetch(url + `?count=${count}`, {
             method: "GET"
         })
         const result = (await response.json()) as { data: Task[], success: boolean, error: string}
-        console.log(result)
         result.success ? setTasks(result.data) : console.error(result.error)
     }
-
+    
     const value = {
         getTasks,
-        stepper: handleStep,
+        next,
+        prev,
         currentTask,
         tasks,
         isFirstTask,

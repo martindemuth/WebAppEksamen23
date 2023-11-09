@@ -20,7 +20,7 @@ export async function PUT(request: NextRequest) {
   return NextResponse.json({ success: true, data: tasks }, { status: 201 })
 }
 
-export function GET(request: NextRequest) {
+export async function GET(request: NextRequest) {
   const countParam = request.nextUrl.searchParams.get("count")
   const count = Number(countParam)
   if (!count || count < 0 || count > 10 || isNaN(count))
