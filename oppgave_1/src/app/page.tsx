@@ -1,3 +1,4 @@
+"use client"
 import Answer from "@/components/Answer"
 import Header from "@/components/Header"
 import Progress from "@/components/Progress"
@@ -5,6 +6,7 @@ import Progress from "@/components/Progress"
 import { type Task } from "@/types"
 import Tasks from "@/components/Tasks"
 import TaskText from "@/components/Text"
+import TaskProvider from "@/features/TaskContext"
 
 
 export default async function Home() {
@@ -14,17 +16,19 @@ export default async function Home() {
     method: "GET",
   })
   const result = (await response.json()) as {success: boolean, data: Task[]}
-  
+  const url = `http://localhost:3000/api`
 
 
   return (
     <main>
       <Header />
-      <Tasks tasks={result.data}>
-        <Answer />
-      </Tasks>
-      <TaskText text={"Hva blir resultatet av regneoperasjonen?"} />
-      <Progress tasks={result.data}/>
+      <TaskProvider url={url}>
+        <Tasks tasks={result.data}>
+          <Answer />
+        </Tasks>
+        <TaskText text={"Hva blir resultatet av regneoperasjonen?"} />
+        <Progress tasks={result.data}/>
+      </TaskProvider>
     </main>
   )
 }
