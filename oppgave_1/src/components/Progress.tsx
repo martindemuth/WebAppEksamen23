@@ -7,7 +7,7 @@ import { type Task } from "@/types"
 import useProgress from "@/hooks/useProgress"
 
 export default function Progress(props: { tasks: Task[] }) {
-
+  
   const {count, current, next, prev} = useProgress ({tasks: props.tasks})
   
 
