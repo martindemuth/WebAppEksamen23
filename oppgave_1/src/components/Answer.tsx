@@ -9,6 +9,9 @@ export default function Answer() {
   const [isSolved, setSolved] = useState(false)
   
   const correctAnswer = 11
+
+  // const {currentTask} = useTaskContext;
+  // const {correctAnswer} = useAnswer().calculateExpression(currentTask.type, currentTask.operand1, currentTask.operand2);
   
 
   const send = (event: MouseEvent<HTMLButtonElement>) => {
