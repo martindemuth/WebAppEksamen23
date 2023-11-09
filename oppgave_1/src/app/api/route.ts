@@ -2,6 +2,8 @@ import type { NextRequest } from "next/server"
 import { NextResponse } from "next/server"
 
 import { type Task } from "@/types"
+import { createTasks } from "@/features/createTasks"
+import { useParams, useSearchParams } from "next/navigation"
 
 const tasks: Task[] = [
   {
@@ -12,30 +14,30 @@ const tasks: Task[] = [
     operand2: 3,
     tries: 3,
   },
-    {
-      id: "123",
-      text: "Skriv resultatet av regneoperasjonen",
-      type: "+",
-      operand1: 2,
-      operand2: 3,
-      tries: 3,
-    },
-    {
-      id: "234",
-      text: "Skriv resultatet av regneoperasjonen",
-      type: "+",
-      operand1: 2,
-      operand2: 3,
-      tries: 3,
-    },
-    {
-      id: "356",
-      text: "Skriv resultatet av regneoperasjonen",
-      type: "+",
-      operand1: 2,
-      operand2: 3,
-      tries: 3,
-    },
+  {
+    id: "123",
+    text: "Skriv resultatet av regneoperasjonen",
+    type: "+",
+    operand1: 2,
+    operand2: 3,
+    tries: 3,
+  },
+  {
+    id: "234",
+    text: "Skriv resultatet av regneoperasjonen",
+    type: "+",
+    operand1: 2,
+    operand2: 3,
+    tries: 3,
+  },
+  {
+    id: "356",
+    text: "Skriv resultatet av regneoperasjonen",
+    type: "+",
+    operand1: 2,
+    operand2: 3,
+    tries: 3,
+  },
 ]
 
 // TODO: Denne skal brukes til å "samle" svarene (om du ikke bruker database)
@@ -48,8 +50,10 @@ export function PUT(request: NextRequest) {
   return NextResponse.json({ success: true, data: tasks }, { status: 207 })
 }
 
-export function GET(request: NextRequest) {
-  const count = -1
+export function GET(request: NextRequest, {params}: {params: {count: number}}) {
+  const count = 3
+  //const taskList = createTasks(count)
+  
   if (!count)
     return NextResponse.json({ success: false, error: "Invalid count" })
   return NextResponse.json({ success: true, data: tasks }, { status: 200 })

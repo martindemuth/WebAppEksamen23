@@ -8,11 +8,14 @@ import TaskText from "@/components/Text"
 
 
 export default async function Home() {
+  // TODO: Flytt til egen custom hook
   // TODO: Try/catch
-  const response = await fetch("http://localhost:3000/api", {
-    method: "get",
+  const response = await fetch(`http://localhost:3000/api/`, {
+    method: "GET"
   })
   const result = (await response.json()) as {success: boolean, data: Task[]}
+  
+
 
   return (
     <main>
