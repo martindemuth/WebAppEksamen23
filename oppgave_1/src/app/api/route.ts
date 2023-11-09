@@ -28,7 +28,7 @@ export function PUT(request: NextRequest) {
 
 export function GET(request: NextRequest, {params}: {params: {count: number}}) {
   const count = 3
-  const taskList = tasks
+  const taskList = createTasks(3)
   
   if (!count)
     return NextResponse.json({ success: false, error: "Invalid count" })

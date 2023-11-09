@@ -5,6 +5,7 @@ import Progress from "@/components/Progress"
 import { type Task } from "@/types"
 import Tasks from "@/components/Tasks"
 import TaskText from "@/components/Text"
+import Result from "@/components/Result"
 
 
 export default async function Home() {

@@ -1,7 +1,9 @@
 import Result from "@/components/Result"
 
-export default async function Home() {
+export default async function Test() {
     return (
-        <Result />
+        <main>
+            <Result />
+        </main>
     )
 }
