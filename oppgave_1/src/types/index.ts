@@ -7,7 +7,7 @@ export type Task = {
   operand2: number
 }
 
-export type Type = "+" | "-" | "*" | "/"
+export type Type = "add" | "subtract" | "multiply" | "divide"
 
 export type FakerTask = {
   id: () => string
@@ -16,4 +16,11 @@ export type FakerTask = {
   type: () => Type
   operand1: () => number
   operand2: () => number
+}
+
+export type TaskAnswer = {
+  id: string
+  isCorrect: boolean
+  attempts: number
+  taskId: string
 }
