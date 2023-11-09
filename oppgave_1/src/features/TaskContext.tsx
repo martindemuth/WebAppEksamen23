@@ -1,13 +1,13 @@
 "use client"
 import useTask from "@/hooks/useTask";
 import { Task } from "@/types";
-import { ReactNode, createContext, useContext, useState } from "react";
+import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 
 type TaskContextType = {
     getTasks: (count: number) => void
     stepper: (action: "next" | "prev") => void
     currentTask: Task
-    tasks: Task[] | null
+    tasks: Task[]
     isFirstTask: boolean
     isFinalTask: boolean
 }
@@ -24,11 +24,16 @@ export default function TaskProvider(props: {
 
     const {currentTask, handleStep, isFirstTask, isFinalTask} = useTask(tasks)
 
+    useEffect(() => {
+        getTasks(10)
+    }, [])
+
     const getTasks = async (count: number) => {
         const response = await fetch(url + `?count=${count}`, {
             method: "GET"
         })
         const result = (await response.json()) as { data: Task[], success: boolean, error: string}
+        console.log(result)
         result.success ? setTasks(result.data) : console.error(result.error)
     }
 

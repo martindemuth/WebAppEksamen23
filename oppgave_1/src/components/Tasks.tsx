@@ -1,15 +1,10 @@
-'use client'
+"use client"
 import { type ReactNode } from "react"
 import { type Task } from "@/types"
-import { useTaskContext } from "@/features/TaskContext";
+import { useTaskContext } from "@/features/TaskContext"
 
-export default function Tasks({ children, tasks, currentId }: { children: ReactNode, tasks: Task[], currentId: string }) {
-  
-// TODO: Fikse currentTask, så den bruker den Id istede for current
-  const {currentTask} = useTaskContext()
-
-  console.log(currentTask);
-
+export default function Tasks({ children }: { children: ReactNode}) {
+  const {tasks} = useTaskContext()
   return (
 <section>
   {tasks.map((task) => {
@@ -20,11 +15,9 @@ export default function Tasks({ children, tasks, currentId }: { children: ReactN
           <h3>{task.text}</h3>
           <p>{`${task.operand1} ${task.type} ${task.operand2}`}</p>
         </article>
-      );
-    }
-    return null;
-  })}
-  {children}
-</section>
+        
+      ))}
+      {children}
+    </section>
   )
 }
