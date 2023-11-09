@@ -12,12 +12,13 @@ import TaskProvider from "@/features/TaskContext"
 export default async function Home() {
   // TODO: Flytt til egen custom hook
   // TODO: Try/catch
-  const response = await fetch(`http://localhost:3000/api/`, {
+  const response = await fetch(`http://localhost:3000/api?count=10`, {
     method: "GET",
+    cache: "no-store"
   })
   const result = (await response.json()) as {success: boolean, data: Task[]}
   const url = `http://localhost:3000/api`
-
+  console.log(result)
 
   return (
     <main>
