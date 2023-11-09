@@ -1,14 +1,24 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import type { FormEvent, MouseEvent } from "react"
+import Button from "./Button"
 
 export default function Answer() {
   const [answer, setAnswer] = useState(0)
+  const [isSolved, setSolved] = useState(false)
+  
+  const correctAnswer = 11
+  
 
   const send = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
     console.log(answer)
+
+    if (correctAnswer === answer) setSolved (true)
+
+    console.log(isSolved)
+
   }
 
   const update = (event: FormEvent<HTMLInputElement>) => {
@@ -22,10 +32,19 @@ export default function Answer() {
         name="answer"
         type="number"
         placeholder="Sett svar her"
-        onChange={update}
-      />
-      {9 + 2 === answer ? "Bra jobbet!" : null}
+        onChange= {update}/>
       <button onClick={send}>Send</button>
+      {
+        isSolved ? 
+          <>
+            <p>Bra jobbet!</p>
+            <button>Knapp</button>
+            {/* <Button classNames="" children="Vis neste oppgave"/> */}
+          </>
+         : 
+        null
+      }
+
     </div>
   )
 }
