@@ -11,7 +11,8 @@ export default async function Home() {
   // TODO: Flytt til egen custom hook
   // TODO: Try/catch
   const response = await fetch(`http://localhost:3000/api/`, {
-    method: "GET"
+    method: "GET",
+    cache: "no-store"
   })
   const result = (await response.json()) as {success: boolean, data: Task[]}
   
