@@ -12,7 +12,7 @@ import {TaskProvider} from "@/features/TaskContext"
 export default function Home() {
   // TODO: Flytt til egen custom hook
   // TODO: Try/catch
-  const url = `http://localhost:3000/api`
+  const url = `http://localhost:3002/api`
   
 
   return (
@@ -20,10 +20,10 @@ export default function Home() {
       <Header />
       <TaskProvider url={url}>
         {/* den viser bare første i task, så går ikke bla, venter på currentTask */}
+        {/* <TaskText text={"Hva blir resultatet av regneoperasjonen?"} /> */}
         <Tasks>
           <Answer />
         </Tasks>
-        <TaskText text={"Hva blir resultatet av regneoperasjonen?"} />
         <Progress/>
       </TaskProvider>
     </main>
