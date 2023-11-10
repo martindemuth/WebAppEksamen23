@@ -6,15 +6,19 @@ import { getServerSideProps } from "next/dist/build/templates/pages"
 export default function Tasks({ children }: { children: ReactNode}) {
   const { tasks, currentTask } = useTaskContext()
   return (
-    <section>
-      {tasks.map((task) => (
-            <article key={task.id}>
-              <p>{task.type}</p>
-              <h3>{task.text}</h3>
-              <p>{`${task.operand1} ${task.type} ${task.operand2}`}</p>
-            </article>
-          ))}
-          {children}
-    </section>
+<section>
+  {tasks.map((task) => {
+    if (task.id === currentTask.id) {
+      return (
+        <article key={task.id}>
+          <span>{task.text}</span>
+          <p>{`${task.operand1} ${task.type} ${task.operand2}`}</p>
+        </article>
+      );
+    }
+    return null; // Return null for non-matching tasks
+  })}
+  {children}
+</section>
   )
 }
