@@ -9,11 +9,15 @@ import Button from "./Button"
 export default function Answer() {
   const [answer, setAnswer] = useState(0)
   const [isSolved, setSolved] = useState(false)
+  const [attemptFail, setAttemptFail] = useState(false)
+  const [score, setScore] = useState(0)
+  const [countAttempts, setCountAttempts] = useState(0)
   const [taskAnswers, setTaskAnswers] = useState<TaskAnswer[]>([])
 
   useEffect(() => {
     fetchAnswers()
   }, [])
+
   const { prev, next, currentTask } = useTaskContext()
 
   const correctAnswer = currentTask
@@ -42,44 +46,68 @@ export default function Answer() {
   const send = async (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
 
+    let solvedValue = false
     if (correctAnswer === answer) {
-      setSolved(true)
-      console.log(isSolved)
+      solvedValue = true
+      setScore(score + 1)
     }
 
-   // Send the answer to the server
-   try {
-    const response = await fetch("http://localhost:3002/api/taskAnswers", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: currentTask.id,
-        isCorrect: true,
-        attempts: 1,
-        taskId: currentTask.id,
-      }),
-    });
-
-    const result = await response.json();
-
-    if (result.success) {
-      console.log("Answer submitted successfully!");
-      await fetchAnswers(); 
-      console.log(taskAnswers); 
-    } else {
-      console.error(`Error: ${result.error}`);
+    let attemptsValue = 1
+    taskAnswers.forEach((taskAnswer) => {
+      if (taskAnswer.taskId === currentTask.id) {
+        attemptsValue = taskAnswer.attempts + 1
+      }
+    })
+    let failedAttempt = false
+    if (attemptsValue >= 3) {
+      failedAttempt = true
+      setSolved(false)
     }
-  } catch (error) {
-    console.error("Error sending answer:", error);
+
+    try {
+      setSolved(solvedValue)
+      setCountAttempts(attemptsValue)
+      setAttemptFail(failedAttempt)
+
+      const response = await fetch("http://localhost:3002/api/taskAnswers", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: currentTask.id,
+          isCorrect: solvedValue,
+          attempts: attemptsValue,
+          taskId: currentTask.id,
+        }),
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        console.log("Answer submitted successfully!")
+
+        await fetchAnswers()
+        console.log(taskAnswers)
+      } else {
+        console.error(`Error: ${result.error}`)
+      }
+    } catch (error) {
+      console.error("Error sending answer:", error)
+    }
   }
-};
-
 
   const update = (event: FormEvent<HTMLInputElement>) => {
     setAnswer(event.currentTarget.valueAsNumber)
     setSolved(false)
+  }
+
+  const showAnswer = async (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+
+    console.log(correctAnswer)
+    setSolved(true)
+    setAttemptFail(false)
   }
 
   return (
@@ -110,6 +138,24 @@ export default function Answer() {
           </>
         ) : null}
       </div>
+      <div>
+        {attemptFail ? (
+          <>
+            <span>Du har brukt opp forsøkene dine på denne oppgaven!</span>
+            <span>Trykk på knappen for å se svar</span>
+            <button
+              onClick={showAnswer}
+              className="mx-3 bg-teal-700 text-white"
+            >
+              Vis svar!
+            </button>
+          </>
+        ) : null}
+      </div>
+
+        <span>
+          Din poengsum: {score}
+        </span>
     </div>
   )
 }
