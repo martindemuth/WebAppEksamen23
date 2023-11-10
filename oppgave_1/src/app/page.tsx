@@ -19,8 +19,6 @@ export default function Home() {
     <main>
       <Header />
       <TaskProvider url={url}>
-        {/* den viser bare første i task, så går ikke bla, venter på currentTask */}
-        {/* <TaskText text={"Hva blir resultatet av regneoperasjonen?"} /> */}
         <Tasks>
           <Answer />
         </Tasks>
