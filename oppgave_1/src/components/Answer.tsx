@@ -154,8 +154,6 @@ export default function Answer() {
           </>
         ) : null}
       </div>
-
-      <span>Din poengsum: {score}</span>
     </div>
   )
 }
