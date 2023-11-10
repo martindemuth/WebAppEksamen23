@@ -122,6 +122,8 @@ export default function Answer() {
       <button onClick={send} className="ml-3 border-black">
         Send
       </button>
+      <p className="my-3 font-bold">Forsøk: {countAttempts} av 3</p>
+      <span className="font-bold te">Din poengsum: {score}</span>
       <div className="mt-3 flex flex-row">
         <button
           onClick={prev}
@@ -153,9 +155,7 @@ export default function Answer() {
         ) : null}
       </div>
 
-        <span>
-          Din poengsum: {score}
-        </span>
+      <span>Din poengsum: {score}</span>
     </div>
   )
 }
