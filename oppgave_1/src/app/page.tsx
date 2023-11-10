@@ -12,7 +12,7 @@ import {TaskProvider} from "@/features/TaskContext"
 export default function Home() {
   // TODO: Flytt til egen custom hook
   // TODO: Try/catch
-  const url = `http://localhost:3002/api`
+  const url = `http://localhost:3002/api/tasks`
   
 
   return (
