@@ -1,6 +1,7 @@
 import useProgress from "@/hooks/useProgress";
 import useTask from "@/hooks/useTask";
 import { Task } from "@/types";
+import { TaskAnswer } from "@/types";
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 
 type TaskContextType = {
@@ -9,6 +10,7 @@ type TaskContextType = {
     prev: () => void
     currentTask: Task
     tasks: Task[]
+    taskAnswers: TaskAnswer []
     isFirstTask: boolean
     isFinalTask: boolean
 }
@@ -23,7 +25,6 @@ export const TaskProvider = (props: {
     useEffect(() => {
         getTasks(10)
     }, [])
-
 
     const {children, url} = props
 
@@ -40,7 +41,7 @@ export const TaskProvider = (props: {
         const result = (await response.json()) as { data: Task[], success: boolean, error: string}
         result.success ? setTasks(result.data) : console.error(result.error)
     }
-    
+
     const value = {
         getTasks,
         next,
