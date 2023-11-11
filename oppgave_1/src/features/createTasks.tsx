@@ -44,7 +44,7 @@ export const createTasks = (
             operand2: faker.operand2()
         }
 
-        operatorTypeIndex < operatorTypes.length ? operatorTypeIndex++ : operatorTypeIndex = 0
+        operatorTypeIndex < (operatorTypes.length - 1) ? operatorTypeIndex++ : operatorTypeIndex = 0
         taskList.push(generatedTask)
     }
     return taskList

@@ -1,7 +1,7 @@
 
 
 export default function useAnswer () {
-    const calculateExpression = (type: String, operand1: number, operand2: number) => {
+    const calculateExpression = (type: string, operand1: number, operand2: number) => {
         switch (type) {
             case "add":
                 return operand1 + operand2
