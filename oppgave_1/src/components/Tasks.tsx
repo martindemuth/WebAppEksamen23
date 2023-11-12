@@ -5,8 +5,6 @@ import { getServerSideProps } from "next/dist/build/templates/pages"
 
 export default function Tasks({ children }: { children: ReactNode}) {
   const { tasks, currentTask } = useTaskContext()
-
-  
   
   const getOperation = (operationType: string) => {
     switch(operationType){
