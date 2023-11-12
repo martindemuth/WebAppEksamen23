@@ -31,7 +31,7 @@ export default function Answer() {
   const fetchAnswers = async () => {
     try {
       const response = await fetch("http://localhost:3002/api/taskAnswers")
-      const result = await response.json()
+      const result = (await response.json()) as TaskAnswer[]
 
       if (result.success) {
         setTaskAnswers(result.data)
