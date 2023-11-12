@@ -1,13 +1,13 @@
 import { Task } from "@/types";
 import { useEffect, useState } from "react";
 
-// Ikke bruk denne
+
 export default function useTasks(url: string, count: number){
     const [tasks, setTasks] = useState<Task[]>([])
 
     useEffect(() => {
         async function getTasks(count: number) {
-            const response = await fetch(url + `?count=${count}`, {
+            const response = await fetch(url + `/tasks?count=${count}`, {
                 method: "GET"
             })
             const result = (await response.json()) as { data: Task[], success: boolean, error: string}

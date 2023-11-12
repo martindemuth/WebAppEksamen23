@@ -13,6 +13,7 @@ type TaskContextType = {
     //taskAnswers: TaskAnswer []
     isFirstTask: boolean
     isFinalTask: boolean
+    url: string
 }
 
 const TaskContext = createContext<TaskContextType | undefined>(undefined)
@@ -33,7 +34,8 @@ export const TaskProvider = (props: {
         currentTask,
         tasks,
         isFirstTask,
-        isFinalTask
+        isFinalTask,
+        url
     }
 
     return (

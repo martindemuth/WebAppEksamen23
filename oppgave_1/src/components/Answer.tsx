@@ -18,7 +18,7 @@ export default function Answer() {
     fetchAnswers()
   }, [])
 
-  const { prev, next, currentTask } = useTaskContext()
+  const { prev, next, currentTask, url } = useTaskContext()
 
   const correctAnswer = currentTask
     ? useAnswer().calculateExpression(
@@ -30,7 +30,7 @@ export default function Answer() {
 
   const fetchAnswers = async () => {
     try {
-      const response = await fetch(`http://localhost:${process.env.NEXT_PUBLIC_PORT ?? 3000}/api/taskAnswers`)
+      const response = await fetch(`${url}/taskAnswers`)
       const result = (await response.json()) as { data: TaskAnswer[], success: boolean, error: string }
 
       if (result.success) {
@@ -69,7 +69,7 @@ export default function Answer() {
       setCountAttempts(attemptsValue)
       setAttemptFail(failedAttempt)
 
-      const response = await fetch(`http://localhost:${process.env.NEXT_PUBLIC_PORT ?? 3000}/api/taskAnswers`, {
+      const response = await fetch(`${url}/taskAnswers`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

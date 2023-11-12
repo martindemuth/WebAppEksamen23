@@ -12,7 +12,7 @@ import useTasks from "@/hooks/useTasks"
 
 
 export default function Home() {
-  const url = `http://localhost:${process.env.NEXT_PUBLIC_PORT ?? 3000}/api/tasks`
+  const url = `http://localhost:${process.env.NEXT_PUBLIC_PORT ?? 3000}/api`
 
   return (
     <main>
