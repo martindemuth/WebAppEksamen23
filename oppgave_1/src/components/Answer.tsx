@@ -30,8 +30,8 @@ export default function Answer() {
 
   const fetchAnswers = async () => {
     try {
-      const response = await fetch("http://localhost:3002/api/taskAnswers")
-      const result = (await response.json()) as TaskAnswer[]
+      const response = await fetch(`http://localhost:${process.env.NEXT_PUBLIC_PORT ?? 3000}/api/taskAnswers`)
+      const result = (await response.json()) as { data: TaskAnswer[], success: boolean, error: string }
 
       if (result.success) {
         setTaskAnswers(result.data)
@@ -69,7 +69,7 @@ export default function Answer() {
       setCountAttempts(attemptsValue)
       setAttemptFail(failedAttempt)
 
-      const response = await fetch("http://localhost:3002/api/taskAnswers", {
+      const response = await fetch(`http://localhost:${process.env.NEXT_PUBLIC_PORT ?? 3000}/api/taskAnswers`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -82,7 +82,7 @@ export default function Answer() {
         }),
       })
 
-      const result = await response.json()
+      const result = (await response.json()) as { success: boolean, error: string }
 
       if (result.success) {
         console.log("Answer submitted successfully!")

@@ -1,6 +1,7 @@
 import { Task } from "@/types";
 import { useState } from "react";
 
+// Ikke bruk denne
 export default function useTask(tasks: Task[]){
     const [taskIndex, setTaskIndex] = useState(0)
     const currentTask = tasks[taskIndex]
