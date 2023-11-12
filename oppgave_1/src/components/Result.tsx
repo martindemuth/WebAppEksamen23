@@ -1,3 +1,5 @@
+import { analyzePerformance } from "@/features/analyzePerformance"
+import { calculateScore } from "@/features/calculateScore"
 import { createTasks } from "@/features/createTasks"
 import { type Task, type TaskAnswer } from "@/types"
 
@@ -24,7 +26,7 @@ export default function Result (/*answers: Map<Task, TaskAnswer>*/) {
 
     const answer3: TaskAnswer = {
         id: "3",
-        isCorrect: true,
+        isCorrect: false,
         attempts: 3,
         taskId: taskList[2].id
     }
@@ -36,9 +38,8 @@ export default function Result (/*answers: Map<Task, TaskAnswer>*/) {
 
     console.log(answerList)
 
+    // Denne kommer med som parameter, men hardkodes her
     const answers = new Map<Task, TaskAnswer>()
-
-    
 
     // Populere answers map
     for (let i = 0; i < taskList.length; i++) {
@@ -48,30 +49,25 @@ export default function Result (/*answers: Map<Task, TaskAnswer>*/) {
     }
     console.log(answers)
 
-    const calculateScore = () => {
-        let score = 0
+    // ================================================== //
 
-        Array.from(answers).map(([,answer]) => {
-            if(answer.isCorrect) {
-                score++
-            } 
-        })
-        return score
-    }
+    const score = calculateScore(answers)
+    const totalTasks = answers.size
+    console.log(score)
+    const mostFailedType = analyzePerformance(answers)
+    console.log(mostFailedType)
 
-    console.log(calculateScore())
-
-    
-    
     return (
         <section>
-        {Array.from(answers).map(([task, answer]) => (
-                <article key={task.id}>
-                    <p>{"Task id: " + task.id + " - Answer taskId: " + answer.taskId}</p>
-                    <p>{"Expression: " + task.operand1 + " " + task.type + " " +task.operand2}</p>
-                    <h3>{"Answer isCorrect?: " + answer.isCorrect}</h3>
-                </article>
-            ))}
+            <article>
+                <p>
+                    {"Du fikk " + score + " riktige svar av " + totalTasks + " mulige"}
+                </p>
+                <p>
+                    {"Du fikk flest feil på oppgaver av typen :" + " " + mostFailedType}
+                </p>
+                <button>Start på nytt</button>
+            </article>
         </section>
     )
 }
