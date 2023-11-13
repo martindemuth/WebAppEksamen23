@@ -1,3 +1,4 @@
+import { count } from "console"
 
 
 export default function useAnswer () {
@@ -14,4 +15,26 @@ export default function useAnswer () {
         }
     }
     return {calculateExpression}
+
+    // const checkTypes = (answers: []) => {
+    //     const countAdd = 0
+    //     const countSubstract = 0
+    //     const countDivide = 0
+    //     const countMultiply = 0
+
+    //     answers.map((answer) => {
+    //         switch (answer.type) {
+    //             case "add":
+    //                 return countAdd + 1
+    //             case "subtract":
+    //                 return countSubstract +1
+    //             case "divide":
+    //                 return countDivide + 1
+    //             case "multiply":  
+    //                 return countMultiply + 1
+    //         }
+    //     })
+
+    //     return answers
+    // }
 }
