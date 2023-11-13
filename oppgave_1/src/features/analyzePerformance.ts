@@ -9,7 +9,7 @@ import { Task, TaskAnswer } from "@/types"
 export const analyzePerformance = (answers: Map<Task, TaskAnswer>) => {
     
     const incorrectTypeFrequency = new Map<string, number>()
-
+    
     // Sett inn alle typer(add, divide...) hvor bruker har svart feil som key, og
     // tell antall forekomster per type og sett som value
     answers.forEach((answer, task) => {

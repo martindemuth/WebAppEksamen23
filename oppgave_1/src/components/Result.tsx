@@ -49,6 +49,8 @@ export default function Result (/*answers: Map<Task, TaskAnswer>*/) {
     }
     console.log(answers)
 
+    
+
     // ================================================== //
 
     const score = calculateScore(answers)
@@ -56,6 +58,10 @@ export default function Result (/*answers: Map<Task, TaskAnswer>*/) {
     console.log(score)
     const mostFailedType = analyzePerformance(answers)
     console.log(mostFailedType)
+
+    const handleClick = () => {
+        window.location.href="http://localhost:3000/"
+    }
 
     return (
         <section>
@@ -66,7 +72,12 @@ export default function Result (/*answers: Map<Task, TaskAnswer>*/) {
                 <p>
                     {"Du fikk flest feil på oppgaver av typen :" + " " + mostFailedType}
                 </p>
-                <button>Start på nytt</button>
+                
+                <button onClick={handleClick} className="mx-3 bg-teal-700 text-white" >
+                    Start på nytt
+                </button>
+            
+                
             </article>
         </section>
     )
