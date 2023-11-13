@@ -7,7 +7,28 @@ import { type Task } from "@/types"
 
 const answers = new Map<Task, TaskAnswer>()
 
-export async function POST(request: NextRequest) {
+// export async function POST(request: NextRequest) {
+//   const { id, isCorrect, attempts, task: currentTask } = await request.json();
+
+//   if (!currentTask) {
+//     return NextResponse.json({ success: false, error: "Current task data is missing" }, { status: 400 });
+//   }
+
+//   const { id: taskId } = currentTask;
+
+//   const taskAnswer: TaskAnswer = {
+//     id,
+//     isCorrect,
+//     attempts,
+//     taskId,
+//   };
+
+//   answers.set(currentTask, taskAnswer);
+
+//   return NextResponse.json({ success: true, data: { task: currentTask, taskAnswer } }, { status: 201 });
+// }
+
+export async function PUT(request: NextRequest) {
   const { id, isCorrect, attempts, task: currentTask } = await request.json();
 
   if (!currentTask) {
@@ -16,17 +37,32 @@ export async function POST(request: NextRequest) {
 
   const { id: taskId } = currentTask;
 
-  const taskAnswer: TaskAnswer = {
-    id,
-    isCorrect,
-    attempts,
-    taskId,
-  };
+  // Find existing data based on taskId
+  let existingTaskAnswer = answers.get(taskId);
 
-  answers.set(currentTask, taskAnswer);
+  // If taskId not found, create new data
+  if (!existingTaskAnswer) {
+    existingTaskAnswer = {
+      id,
+      isCorrect,
+      attempts,
+      taskId,
+      task: currentTask, // Store the whole task data
+    };
 
-  return NextResponse.json({ success: true, data: { task: currentTask, taskAnswer } }, { status: 201 });
+    answers.set(taskId, existingTaskAnswer);
+
+    return NextResponse.json({ success: true, data: { task: currentTask, taskAnswer: existingTaskAnswer } }, { status: 201 });
+  }
+
+  // Update existing data
+  existingTaskAnswer.isCorrect = isCorrect;
+  existingTaskAnswer.attempts = attempts;
+  existingTaskAnswer.task = currentTask; // Update the whole task data
+
+  return NextResponse.json({ success: true, data: { task: currentTask, taskAnswer: existingTaskAnswer } }, { status: 200 });
 }
+
 
 export async function GET(request: NextRequest) {
   const taskAnswersArray = Array.from(answers.entries()).map(([task, taskAnswer]) => ({
