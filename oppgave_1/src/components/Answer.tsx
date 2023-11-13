@@ -30,10 +30,14 @@ export default function Answer() {
   const fetchAnswers = async () => {
     try {
       const response = await fetch(`${url}/taskAnswers`)
-      const result = (await response.json()) as { data: TaskAnswer[], success: boolean, error: string }
+      const result = await response.json()
 
       if (result.success) {
-        setTaskAnswers(result.data)
+        const data = result.data.map(({ task, taskAnswer }) => ({
+          task,
+          taskAnswer,
+        }))
+        setTaskAnswers(data)
       } else {
         console.error(`Error fetching answers: ${result.error}`)
       }
@@ -50,17 +54,20 @@ export default function Answer() {
       solvedValue = true
     }
 
+    let failedAttempt = false
     let attemptsValue = 1
+
     taskAnswers.forEach((taskAnswer) => {
       if (taskAnswer.taskId === currentTask.id) {
         attemptsValue = taskAnswer.attempts + 1
       }
+
+      if (attemptsValue >= 3 && !taskAnswer.isCorrect ) {
+        failedAttempt = true
+        setSolved(false)
+      }
+
     })
-    let failedAttempt = false
-    if (attemptsValue >= 3) {
-      failedAttempt = true
-      setSolved(false)
-    }
 
     try {
       setSolved(solvedValue)
@@ -76,11 +83,14 @@ export default function Answer() {
           id: currentTask.id,
           isCorrect: solvedValue,
           attempts: attemptsValue,
-          taskId: currentTask.id,
+          task: currentTask,
         }),
       })
 
-      const result = (await response.json()) as { success: boolean, error: string }
+      const result = (await response.json()) as {
+        success: boolean
+        error: string
+      }
 
       if (result.success) {
         console.log("Answer submitted successfully!")
