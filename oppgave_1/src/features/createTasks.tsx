@@ -18,7 +18,6 @@ const getRandomType = () => {
 
 export const fakerTask: FakerTask = {
     id: () => generateId(),
-    text: "Skriv resultatet av regneoperasjonen",
     tries: 3,
     type: () => getRandomType(),
     operand1: () => generateOperands(),
@@ -37,7 +36,6 @@ export const createTasks = (
     for (let index = 0; index < count; index++) {
         const generatedTask = {
             id: faker.id(),
-            text: faker.text,
             tries: faker.tries,
             type: operatorTypes[operatorTypeIndex],
             operand1: faker.operand1(),

@@ -8,10 +8,5 @@ export const calculateScore = (answers: Map<Task, TaskAnswer>) => {
             score++
         } 
     })
-    // Array.from(answers).map(([,answer]) => {
-    //     if(answer.isCorrect) {
-    //         score++
-    //     } 
-    // })
     return score
 }
