@@ -10,7 +10,6 @@ export default function Answer() {
   const [answer, setAnswer] = useState(0)
   const [isSolved, setSolved] = useState(false)
   const [attemptFail, setAttemptFail] = useState(false)
-  const [score, setScore] = useState(0)
   const [countAttempts, setCountAttempts] = useState(0)
   const [taskAnswers, setTaskAnswers] = useState<TaskAnswer[]>([])
 
@@ -53,7 +52,6 @@ export default function Answer() {
     let solvedValue = false
     if (correctAnswer === answer) {
       solvedValue = true
-      setScore(score + 1)
     }
 
     let failedAttempt = false
@@ -133,7 +131,6 @@ export default function Answer() {
         Send
       </button>
       <p className="my-3 font-bold">Forsøk: {countAttempts} av 3</p>
-      <span className="te font-bold">Din poengsum: {score}</span>
       <div className="mt-3 flex flex-row">
         <button
           onClick={prev}

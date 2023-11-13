@@ -1,6 +1,5 @@
 export type Task = {
   id: string
-  text: string
   tries: number
   type: Type
   operand1: number
@@ -11,7 +10,6 @@ export type Type = "add" | "subtract" | "multiply" | "divide"
 
 export type FakerTask = {
   id: () => string
-  text: string
   tries: number
   type: () => Type
   operand1: () => number
