@@ -37,17 +37,15 @@ export async function PUT(request: NextRequest) {
 
   const { id: taskId } = currentTask;
 
-  // Find existing data based on taskId
   let existingTaskAnswer = answers.get(taskId);
 
-  // If taskId not found, create new data
   if (!existingTaskAnswer) {
     existingTaskAnswer = {
       id,
       isCorrect,
       attempts,
       taskId,
-      task: currentTask, // Store the whole task data
+      task: currentTask, 
     };
 
     answers.set(taskId, existingTaskAnswer);
@@ -55,10 +53,9 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ success: true, data: { task: currentTask, taskAnswer: existingTaskAnswer } }, { status: 201 });
   }
 
-  // Update existing data
   existingTaskAnswer.isCorrect = isCorrect;
   existingTaskAnswer.attempts = attempts;
-  existingTaskAnswer.task = currentTask; // Update the whole task data
+  existingTaskAnswer.task = currentTask; 
 
   return NextResponse.json({ success: true, data: { task: currentTask, taskAnswer: existingTaskAnswer } }, { status: 200 });
 }
