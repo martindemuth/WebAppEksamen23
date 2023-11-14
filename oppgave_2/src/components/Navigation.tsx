@@ -17,7 +17,11 @@ export default function Navigation() {
         {
             label: "Goals",
             href: "/goals"
-        }
+        },
+        {
+            label: "Competition",
+            href: "/competition"
+        },
     ]
 
     const checkActivePath = (path: string) => {
