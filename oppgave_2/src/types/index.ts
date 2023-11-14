@@ -1,12 +1,13 @@
 export type Performer = {
     id: string
-    gender: string
+    gender: "Male" | "Female"
     sport: string
 }
+
 export type Competition = {
     name: string
     date: Date
-    loaction: string
+    location: string
     goal: string
     priority: string
     comment: string
