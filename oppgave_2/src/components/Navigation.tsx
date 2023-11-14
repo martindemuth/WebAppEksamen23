@@ -17,6 +17,10 @@ export default function Navigation() {
         {
             label: "Goals",
             href: "/goals"
+        },
+        {
+            label: "Competions",
+            href: "/competitions"
         }
     ]
 
@@ -24,14 +28,13 @@ export default function Navigation() {
         return path === pathname
       }
 
-
       return(
-        <nav className="bg-blue-500 py-2 px-4 text-white flex justify-between items-center">
+        <nav className="bg-blue-500 py-2 px-4 text-white text-xl flex justify-items-start gap-8 items-center">
             {routes.map((route)=>(
                 <Link
                 key={route.href} 
                 href={route.href} 
-                className={`${checkActivePath(route.href) ? "underline text-xl font-bold" : ""} hover:text-yellow-300`}>
+                className={`${checkActivePath(route.href) ? "underline font-bold" : ""} hover:text-yellow-300`}>
                     {route.label}
                 </Link>
             ))}   
