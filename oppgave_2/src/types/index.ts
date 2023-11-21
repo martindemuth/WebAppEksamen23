@@ -1,4 +1,4 @@
-export type Performer = {
+export type Athlete = {
     id: string
     gender: "Male" | "Female"
     sport: "Løp" | "Sykkel" | "Ski" | "Triathlon" | "Svømming" | "Styrke" | "Annet"
