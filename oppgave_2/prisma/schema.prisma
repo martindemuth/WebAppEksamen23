@@ -29,7 +29,7 @@ model Meta {
 }
 
 model Competition {
-  id              String   @id
+  id              String   @id @default(uuid())
   date            DateTime
   location        String
   competitionGoal String
@@ -40,7 +40,7 @@ model Competition {
 }
 
 model Goal {
-  id         String   @id
+  id         String   @id @default(uuid())
   date       DateTime
   goalTarget Int
   comment    String
