@@ -1,13 +1,13 @@
 import * as athleteRepo from './athlete.repository'
 
 export const create = async ({ id, gender, sport }) => {
-    const athlete = await athleteRepo.exist({ id })
+    //const athlete = await athleteRepo.exist({ id })
   
     // feil med hentingen av data fra databasen via ORM
-    if (athlete?.error) return { success: false, error: athlete.error }
+    //if (athlete?.error) return { success: false, error: athlete.error }
   
     // bruker finnes hvis data har verdi
-    if (athlete.data) return { success: false, error: 'Athlete already exist' }
+    //if (athlete.data) return { success: false, error: 'Athlete already exist' }
   
     const createdAthlete = await athleteRepo.create({ id, gender, sport })
   

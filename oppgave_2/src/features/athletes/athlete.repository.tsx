@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma'
+import { Athlete as PrismaAthlete } from '@prisma/client'
 
 export const create = async (data) => {
     // bruker try/catch for å håndtere feil gitt av Prisma
@@ -13,11 +14,11 @@ export const create = async (data) => {
     }
   }
   
-  export const exist = async ({ email }) => {
+  export const exist = async ({ id }) => {
     try {
       const user = await prisma.user.findUnique({
         where: {
-          email,
+          id,
         },
       })
   

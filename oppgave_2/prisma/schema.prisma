@@ -4,12 +4,12 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL") 
+  url      = env("DATABASE_URL")
 }
 
 model Athlete {
-  id          String  @id
-  athleteId   String  @unique
+  id          String        @id
+  athleteId   String        @unique
   gender      String
   sport       String
   meta        Meta[]
@@ -18,32 +18,30 @@ model Athlete {
 }
 
 model Meta {
-  id          Int       @id
-  athleteId   String  
-  heartrate   Int
-  athlete     Athlete   @relation(fields: [athleteId], references: [id], onDelete: Cascade)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id        Int      @id
+  athleteId String
+  heartrate Int
+  athlete   Athlete  @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Competition {
-  id                String  @id
-  date              DateTime
-  location          String
-  competitionGoal   String
-  priority          String
-  comment           String
-  athleteId         String
-  athlete           Athlete @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  id              String   @id
+  date            DateTime
+  location        String
+  competitionGoal String
+  priority        String
+  comment         String
+  athleteId       String
+  athlete         Athlete  @relation(fields: [athleteId], references: [id], onDelete: Cascade)
 }
 
 model Goal {
-  id          String  @id
-  date        DateTime
-  goalTarget  Int
-  comment     String
-  athleteId   String
-  athlete     Athlete @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  id         String   @id
+  date       DateTime
+  goalTarget Int
+  comment    String
+  athleteId  String
+  athlete    Athlete  @relation(fields: [athleteId], references: [id], onDelete: Cascade)
 }
-
-
