@@ -21,7 +21,7 @@ export default function Navigation() {
             href: "/goals"
         },
         {
-            label: "Competions",
+            label: "Competitions",
             href: "/competitions"
         }
    ]
