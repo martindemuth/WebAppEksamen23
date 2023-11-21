@@ -5,7 +5,7 @@ import { Performer } from "@/types";
 
 const newPerformer: Performer = {
     id: "",
-    gender: "Male",
+    gender: "Mann",
     sport: "Løp"
 }
 
