@@ -1,16 +1,17 @@
-'use client'
+
 
 import { ChangeEvent, FormEvent, useState } from "react"
-import { Performer } from "@/types";
+import { Athlete } from "@/types";
+import athleteHandler, { POST } from "@/app/api/athlete/route";
 
-const newPerformer: Performer = {
+const newPerformer: Athlete = {
     id: "",
-    gender: "Male",
+    gender: "Mann",
     sport: "Løp"
 }
 
 export default function CreatePerformer(){
-    const [formData, setFormData] = useState<Performer>(newPerformer)
+    const [formData, setFormData] = useState<Athlete>(newPerformer)
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
@@ -18,8 +19,16 @@ export default function CreatePerformer(){
         console.log(formData)
     }
       
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
+
+        const response = await fetch("/api/athlete", {
+            method: "post",
+            body: JSON.stringify(formData),
+            headers: {
+              "Content-Type": "application/json"
+            }
+          })
     }
       
     const inputFieldStyle = "mt-1 p-2 w-half rounded-md border border-gray-300 focus:ring focus:ring-blue-200 focus:outline-none"
@@ -32,34 +41,34 @@ export default function CreatePerformer(){
             <form onSubmit={handleSubmit} className="p-10">
                 <div className="mb-4">
                     <h1 className="mb-4">
-                        Gender
+                        Kjønn
                     </h1>
                     <div className="mb-2 flex items-center gap-2">
                         <input
                             required
                             type="radio"
-                            id="male"
+                            id="mann"
                             name="gender"
-                            value="Male"
-                            checked={formData.gender === 'Male'}
+                            value="Mann"
+                            checked={formData.gender === 'Mann'}
                             onChange={handleChange}
                         />
                         <label htmlFor="gender" className={labelStyle}>
-                            Male
+                            Mann
                         </label>
                     </div>
                     <div className="mb-4 flex items-center gap-2">
                     <input
                         required
                         type="radio"
-                        id="female"
+                        id="kvinne"
                         name="gender"
-                        value="Female"
-                        checked={formData.gender === 'Female'}
+                        value="Kvinne"
+                        checked={formData.gender === 'Kvinne'}
                         onChange={handleChange}
                     />
                     <label htmlFor="gender" className={labelStyle}>
-                        Female
+                        Kvinne
                     </label>
                     </div>
                     <h1 className="mb-4">
@@ -168,7 +177,7 @@ export default function CreatePerformer(){
                     <button
                     type="submit"
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hover:text-yellow-300">
-                        Save
+                        Oppret utøver
                     </button>
                 </div>
             </form>
