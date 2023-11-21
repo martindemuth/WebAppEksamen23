@@ -1,6 +1,6 @@
-export type Performer = {
+export type Athlete = {
     id: string
-    gender: "Male" | "Female"
+    gender: "male" | "female"
     sport: string
 }
 
