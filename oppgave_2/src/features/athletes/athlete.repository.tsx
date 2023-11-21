@@ -6,7 +6,7 @@ export const create = async (data) => {
     try {
       // bruker prisma clienten til å lage bruker
       // .create er metoden vi bruker for å lage noe
-      const athlete = await prisma.user.create({ data })
+      const athlete = await prisma. ({ data })
   
       return { success: true, data: athlete }
     } catch (error) {

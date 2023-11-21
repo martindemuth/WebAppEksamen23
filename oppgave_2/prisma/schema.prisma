@@ -12,18 +12,18 @@ model Athlete {
   athleteId   String        @unique
   gender      String
   sport       String
-  meta        Meta[]
   competition Competition[]
   goal        Goal[]
+  meta        Meta[]
 }
 
 model Meta {
-  id        Int      @id
+  id        Int      @id @default(autoincrement())
   athleteId String
   heartrate Int
-  athlete   Athlete  @relation(fields: [athleteId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  athlete   Athlete  @relation(fields: [athleteId], references: [id], onDelete: Cascade)
 }
 
 model Competition {

@@ -1,12 +1,12 @@
 'use client'
-import CreatePerformer from "@/components/CreatePerformer";
+import CreateAthlete from "@/components/CreateAthlete";
 import Navigation from "@/components/Navigation";
 
 export default function Performers() {
   return (
     <main>
       <Navigation />
-      <CreatePerformer />
+      <CreateAthlete />
     </main>
   )
 }

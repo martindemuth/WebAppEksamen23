@@ -4,14 +4,14 @@ import { ChangeEvent, FormEvent, useState } from "react"
 import { Athlete } from "@/types";
 import athleteHandler, { POST } from "@/app/api/athlete/route";
 
-const newPerformer: Athlete = {
-    id: "",
+const newAthlete: Athlete = {
+    id: "abc-123",
     gender: "Mann",
     sport: "Løp"
 }
 
-export default function CreatePerformer(){
-    const [formData, setFormData] = useState<Athlete>(newPerformer)
+export default function CreateAthlete(){
+    const [formData, setFormData] = useState<Athlete>(newAthlete)
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target

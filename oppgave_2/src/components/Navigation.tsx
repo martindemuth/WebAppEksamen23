@@ -14,7 +14,7 @@ export default function Navigation() {
         },
         {
             label: "Utøver",
-            href: "/performers"
+            href: "/athletes"
         },
         {
             label: "Mål",
