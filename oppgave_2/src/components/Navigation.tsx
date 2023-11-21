@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
@@ -22,7 +24,7 @@ export default function Navigation() {
             label: "Competions",
             href: "/competitions"
         }
-    ]
+   ]
 
     const checkActivePath = (path: string) => {
         return path === pathname

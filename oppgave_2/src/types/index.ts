@@ -1,7 +1,7 @@
 export type Athlete = {
     id: string
-    gender: "male" | "female"
-    sport: string
+    gender: "Male" | "Female"
+    sport: "Løp" | "Sykkel" | "Ski" | "Triathlon" | "Svømming" | "Styrke" | "Annet"
 }
 
 export type Competition = {
