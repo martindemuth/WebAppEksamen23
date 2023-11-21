@@ -32,7 +32,7 @@ export default function CreatePerformer(){
             <form onSubmit={handleSubmit} className="p-10">
                 <div className="mb-4">
                     <h1 className="mb-4">
-                        Gender
+                        Kjønn
                     </h1>
                     <div className="mb-2 flex items-center gap-2">
                         <input
@@ -45,7 +45,7 @@ export default function CreatePerformer(){
                             onChange={handleChange}
                         />
                         <label htmlFor="gender" className={labelStyle}>
-                            Male
+                            Mann
                         </label>
                     </div>
                     <div className="mb-4 flex items-center gap-2">
@@ -59,7 +59,7 @@ export default function CreatePerformer(){
                         onChange={handleChange}
                     />
                     <label htmlFor="gender" className={labelStyle}>
-                        Female
+                        Kvinne
                     </label>
                     </div>
                     <h1 className="mb-4">
@@ -168,7 +168,7 @@ export default function CreatePerformer(){
                     <button
                     type="submit"
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hover:text-yellow-300">
-                        Save
+                        Oppret utøver
                     </button>
                 </div>
             </form>
