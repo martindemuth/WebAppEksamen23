@@ -1,16 +1,17 @@
-'use client'
+
 
 import { ChangeEvent, FormEvent, useState } from "react"
-import { Performer } from "@/types";
+import { Athlete } from "@/types";
+import athleteHandler, { POST } from "@/app/api/athlete/route";
 
-const newPerformer: Performer = {
+const newPerformer: Athlete = {
     id: "",
     gender: "Mann",
     sport: "Løp"
 }
 
 export default function CreatePerformer(){
-    const [formData, setFormData] = useState<Performer>(newPerformer)
+    const [formData, setFormData] = useState<Athlete>(newPerformer)
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
@@ -18,8 +19,16 @@ export default function CreatePerformer(){
         console.log(formData)
     }
       
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
+
+        const response = await fetch("/api/athlete", {
+            method: "post",
+            body: JSON.stringify(formData),
+            headers: {
+              "Content-Type": "application/json"
+            }
+          })
     }
       
     const inputFieldStyle = "mt-1 p-2 w-half rounded-md border border-gray-300 focus:ring focus:ring-blue-200 focus:outline-none"
@@ -38,10 +47,10 @@ export default function CreatePerformer(){
                         <input
                             required
                             type="radio"
-                            id="male"
+                            id="mann"
                             name="gender"
-                            value="Male"
-                            checked={formData.gender === 'Male'}
+                            value="Mann"
+                            checked={formData.gender === 'Mann'}
                             onChange={handleChange}
                         />
                         <label htmlFor="gender" className={labelStyle}>
@@ -52,10 +61,10 @@ export default function CreatePerformer(){
                     <input
                         required
                         type="radio"
-                        id="female"
+                        id="kvinne"
                         name="gender"
-                        value="Female"
-                        checked={formData.gender === 'Female'}
+                        value="Kvinne"
+                        checked={formData.gender === 'Kvinne'}
                         onChange={handleChange}
                     />
                     <label htmlFor="gender" className={labelStyle}>
