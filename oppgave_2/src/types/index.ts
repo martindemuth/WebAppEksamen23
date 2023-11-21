@@ -1,9 +1,12 @@
+import { Prisma } from "@prisma/client"
+
 export type Athlete = {
-    id: string
     userId: string
     gender: "Mann" | "Kvinne"
     sport: "Løp" | "Sykkel" | "Ski" | "Triathlon" | "Svømming" | "Styrke" | "Annet"
 }
+
+
 
 export type Competition = {
     name: string
@@ -14,6 +17,8 @@ export type Competition = {
     comment: string
 }
 
+
+
 export type Goal = {
     name: string
     date: Date
@@ -21,3 +26,20 @@ export type Goal = {
     comment: string
 }
 
+export type CreateAthleteInput = Prisma.AthleteCreateInput
+export type CreateCompetitionInput = Prisma.CompetitionCreateInput
+export type CreateGoal = Prisma.GoalCreateInput
+
+
+export type Data<T> = {
+    success: true
+    data: T | null
+}
+
+export type ResultError = {
+    success: false
+    type?: string
+    error: string
+}
+
+export type Result<T> = Data<T> | ResultError
