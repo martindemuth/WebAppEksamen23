@@ -8,7 +8,7 @@ export type Competition = {
     name: string
     date: Date
     location: string
-    goal: string
+    competitionGoal: string
     priority: string
     comment: string
 
@@ -16,7 +16,7 @@ export type Competition = {
 export type Goal = {
     name: string
     date: Date
-    goal: number
+    goalTarget: number
     comment: string
 }
 
