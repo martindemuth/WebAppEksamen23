@@ -1,5 +1,6 @@
 export type Athlete = {
     id: string
+    userId: string
     gender: "Mann" | "Kvinne"
     sport: "Løp" | "Sykkel" | "Ski" | "Triathlon" | "Svømming" | "Styrke" | "Annet"
 }
@@ -11,8 +12,8 @@ export type Competition = {
     competitionGoal: string
     priority: string
     comment: string
-
 }
+
 export type Goal = {
     name: string
     date: Date
