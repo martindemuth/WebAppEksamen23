@@ -1,4 +1,4 @@
-
+'use client'
 import CreatePerformer from "@/components/CreatePerformer";
 import Navigation from "@/components/Navigation";
 
