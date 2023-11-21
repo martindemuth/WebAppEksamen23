@@ -9,19 +9,19 @@ export default function Navigation() {
 
     const routes = [
         {
-            label: "Home",
+            label: "Hjem",
             href: "/"
         },
         {
-            label: "Performers",
+            label: "Utøver",
             href: "/performers"
         },
         {
-            label: "Goals",
+            label: "Mål",
             href: "/goals"
         },
         {
-            label: "Competions",
+            label: "Konkurranse",
             href: "/competitions"
         }
    ]
