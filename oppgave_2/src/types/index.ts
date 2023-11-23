@@ -6,8 +6,6 @@ export type Athlete = {
     sport: "Løp" | "Sykkel" | "Ski" | "Triathlon" | "Svømming" | "Styrke" | "Annet"
 }
 
-
-
 export type Competition = {
     name: string
     date: Date
@@ -16,8 +14,6 @@ export type Competition = {
     priority: string
     comment: string
 }
-
-
 
 export type Goal = {
     name: string
@@ -29,7 +25,6 @@ export type Goal = {
 export type CreateAthleteInput = Prisma.AthleteCreateInput
 export type CreateCompetitionInput = Prisma.CompetitionCreateInput
 export type CreateGoal = Prisma.GoalCreateInput
-
 
 export type Data<T> = {
     success: true
