@@ -1,8 +1,6 @@
 
-
 import { ChangeEvent, FormEvent, useState } from "react"
 import { Athlete } from "@/types";
-import athleteHandler, { POST } from "@/app/api/athlete/route";
 
 const newAthlete: Athlete = {
     userId: "abc-123",
