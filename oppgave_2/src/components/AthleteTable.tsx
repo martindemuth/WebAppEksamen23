@@ -4,11 +4,12 @@ import { Athlete } from "@/types"
 import { useEffect, useState, useMemo } from "react"
 import { useTable, useGlobalFilter } from "react-table"
 import FilterTable from "./FilterTable"
+import { useRouter } from 'next/navigation'
 
 export default function AthleteTable () {
     const [athletes, setAthletes] = useState<Athlete[]>([])
+    const router = useRouter()
 
-    // Fetch a list with all athletes 
     useEffect(() => {
         async function getAthletes() {
             const response = await fetch("/api/athlete", {
@@ -24,46 +25,23 @@ export default function AthleteTable () {
             } else console.error(result.error)
         }
         getAthletes()
-        console.log(athletes)
+        
     }, [])
-
-    const fakeData = [
-        {
-          userId: "user1",
-          gender: "Mann",
-          sport: "Soccer",
-        },
-        {
-          userId: "user2",
-          gender: "Kvinne",
-          sport: "Løp",
-        },
-        {
-          userId: "user3",
-          gender: "Mann",
-          sport: "Svømming",
-        },
-        {
-          userId: "user4",
-          gender: "Kvinne",
-          sport: "Tennis",
-        }
-      ]
-
-    const data = useMemo(() => fakeData, [])
+    
+    const data = useMemo(() => athletes, [athletes])    
     const columns = useMemo(() => [
         {
-            Header: "Utøver",
-            accessor: "userId",
+            Header: 'Utøver',
+            accessor: 'userId'
         },
         {
-            Header: "Kjønn",
-            accessor: "gender"
+            Header: 'Kjønn',
+            accessor: 'gender'
         },
         {
-            Header: "Sport",
-            accessor: "sport"
-        },
+            Header: 'Sport',
+            accessor: 'sport'
+        }
     ], [])
 
     /* 
@@ -71,18 +49,18 @@ export default function AthleteTable () {
     Glbal Filter: https://hygraph.com/blog/react-table#implmenting-react-table-filtersearch-functionality
     Tailwind: https://flowbite.com/docs/components/tables/
     */
-    const { getTableProps, getTableBodyProps, headerGroups, rows, state, setGlobalFilter, prepareRow  } = useTable({columns, data}, useGlobalFilter)
+    const { getTableProps, getTableBodyProps, headerGroups, rows, state, setGlobalFilter, prepareRow  } = useTable({ columns, data}, useGlobalFilter)
     const { globalFilter } = state;
 
     return (  
         <div className="relative overflow-x-auto w-1/2 m-auto mt-28">
             <FilterTable globalFilter={globalFilter} setGlobalFilter={setGlobalFilter}/>
-            <table className="w-full text-lg text-left rtl:text-right" {...getTableProps()}>
+            <table {...getTableProps()} className="w-full text-lg text-left rtl:text-right">
                 <thead className="text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     {headerGroups.map((headerGroup) => (
                         <tr {...headerGroup.getHeaderGroupProps()}>
                             {headerGroup.headers.map((column) => (
-                                <th className="px-4 py-3" {...column.getHeaderProps()}>
+                                <th scope="col"  {...column.getHeaderProps()} className="px-4 py-3">
                                     {column.render("Header")}
                                 </th>
                             ))}
@@ -93,9 +71,9 @@ export default function AthleteTable () {
                     {rows.map((row) => {
                         prepareRow(row);
                         return (
-                            <tr className="border-b dark:bg-gray-800 dark:border-gray-700" {...row.getRowProps()}>
+                            <tr {...row.getRowProps()} onClick={() => router.push(`/athletes/${row.original.userId}`)} className="border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
                                 {row.cells.map((cell) => (
-                                    <td className="px-4 py-3" {...cell.getCellProps()}>
+                                    <td {...cell.getCellProps()} className="px-4 py-3">
                                         {cell.render("Cell")}
                                     </td>
                                 ))}
