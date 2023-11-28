@@ -1,12 +1,9 @@
 
-
 import { ChangeEvent, FormEvent, useState } from "react"
 import { Athlete } from "@/types";
-import athleteHandler, { POST } from "@/app/api/athlete/route";
 
 const newAthlete: Athlete = {
-    id: "abc-123",
-    athleteId: "abc-123",
+    userId: "abc-123",
     gender: "Mann",
     sport: "Løp"
 }
