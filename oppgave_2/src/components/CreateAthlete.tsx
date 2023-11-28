@@ -32,8 +32,6 @@ export default function CreateAthlete(){
     const inputFieldStyle = "mt-1 p-2 w-half rounded-md border border-gray-300 focus:ring focus:ring-blue-200 focus:outline-none"
     const labelStyle = "block text-sm font-medium text-gray-700"
 
-    
-
     return (
         <div>
             <form onSubmit={handleSubmit} className="p-10">

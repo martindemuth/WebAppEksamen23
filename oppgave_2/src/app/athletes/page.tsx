@@ -2,7 +2,7 @@
 import CreateAthlete from "@/components/CreateAthlete";
 import Navigation from "@/components/Navigation";
 
-export default function Performers() {
+export default function CreateAthletePage() {
   return (
     <main>
       <Navigation />
