@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import * as athleteController from '@/features/athletes/athlete.controller'
 
 export function GET(request: NextRequest){
-    return NextResponse.json({success: true}, {status: 200})
+    return athleteController.listAllAthletes()
 }
 
-export function POST(request: NextRequest){
-    return NextResponse.json({success: true}, {status: 200})
+export async function POST(request: NextRequest){
+    return athleteController.createAthlete(request)
 }
