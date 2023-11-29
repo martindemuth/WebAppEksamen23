@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation'
 
 const newAthlete: Athlete = {
     userId: "",
-    gender: "Mann",
-    sport: "Løp"
+    gender: "male",
+    sport: "running"
 }
 
 export default function CreateAthlete(){
