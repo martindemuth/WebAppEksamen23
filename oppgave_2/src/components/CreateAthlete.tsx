@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation'
 
 const newAthlete: Athlete = {
     userId: "",
-    gender: "Mann",
-    sport: "Løp"
+    gender: "male",
+    sport: "running"
 }
 
 export default function CreateAthlete(){
@@ -61,10 +61,10 @@ export default function CreateAthlete(){
                         <input
                             required
                             type="radio"
-                            id="mann"
+                            id="male"
                             name="gender"
-                            value="Mann"
-                            checked={formData.gender === 'Mann'}
+                            value="male"
+                            checked={formData.gender === 'male'}
                             onChange={handleChange}
                         />
                         <label htmlFor="gender" className={labelStyle}>
@@ -75,10 +75,10 @@ export default function CreateAthlete(){
                     <input
                         required
                         type="radio"
-                        id="kvinne"
+                        id="female"
                         name="gender"
-                        value="Kvinne"
-                        checked={formData.gender === 'Kvinne'}
+                        value="female"
+                        checked={formData.gender === 'female'}
                         onChange={handleChange}
                     />
                     <label htmlFor="gender" className={labelStyle}>
@@ -92,10 +92,10 @@ export default function CreateAthlete(){
                         <input
                             required
                             type="radio"
-                            id="løp"
+                            id="running"
                             name="sport"
-                            value="Løp"
-                            checked={formData.sport === 'Løp'}
+                            value="running"
+                            checked={formData.sport === 'running'}
                             onChange={handleChange}
                         />
                         <label htmlFor="sport" className={labelStyle}>
@@ -106,10 +106,10 @@ export default function CreateAthlete(){
                         <input
                             required
                             type="radio"
-                            id="sykkel"
+                            id="cycling"
                             name="sport"
-                            value="Sykkel"
-                            checked={formData.sport === 'Sykkel'}
+                            value="cycling"
+                            checked={formData.sport === 'cycling'}
                             onChange={handleChange}
                         />
                         <label htmlFor="sport" className={labelStyle}>
@@ -120,10 +120,10 @@ export default function CreateAthlete(){
                         <input
                             required
                             type="radio"
-                            id="ski"
+                            id="skiing"
                             name="sport"
-                            value="Ski"
-                            checked={formData.sport === 'Ski'}
+                            value="skiing"
+                            checked={formData.sport === 'skiing'}
                             onChange={handleChange}
                         />
                         <label htmlFor="sport" className={labelStyle}>
@@ -136,22 +136,22 @@ export default function CreateAthlete(){
                             type="radio"
                             id="triathlon"
                             name="sport"
-                            value="Triathlon"
-                            checked={formData.sport === 'Triathlon'}
+                            value="triathlon"
+                            checked={formData.sport === 'triathlon'}
                             onChange={handleChange}
                         />
                         <label htmlFor="sport" className={labelStyle}>
-                            Triathlon
+                            Triatlon
                         </label>
                     </div>
                     <div className="mb-2 flex items-center gap-2">
                         <input
                             required
                             type="radio"
-                            id="svømming"
+                            id="swimming"
                             name="sport"
-                            value="Svømming"
-                            checked={formData.sport === 'Svømming'}
+                            value="swimming"
+                            checked={formData.sport === 'swimming'}
                             onChange={handleChange}
                         />
                         <label htmlFor="sport" className={labelStyle}>
@@ -162,10 +162,10 @@ export default function CreateAthlete(){
                         <input
                             required
                             type="radio"
-                            id="styrke"
+                            id="strength"
                             name="sport"
-                            value="Styrke"
-                            checked={formData.sport === 'Styrke'}
+                            value="strength"
+                            checked={formData.sport === 'strength'}
                             onChange={handleChange}
                         />
                         <label htmlFor="sport" className={labelStyle}>
@@ -176,10 +176,10 @@ export default function CreateAthlete(){
                         <input
                             required
                             type="radio"
-                            id="annet"
+                            id="other"
                             name="sport"
-                            value="Annet"
-                            checked={formData.sport === 'Annet'}
+                            value="other"
+                            checked={formData.sport === 'other'}
                             onChange={handleChange}
                         />
                         <label htmlFor="sport" className={labelStyle}>
