@@ -1,5 +1,6 @@
 "use client"
 
+import ActicityTable from "@/components/ActivityTable"
 import Navigation from "@/components/Navigation"
 import { getById } from "@/features/athletes/athlete.repository"
 import { Athlete } from "@/types"
@@ -31,7 +32,7 @@ export default function AthletePage (props: { params: { id: string }}) {
     return (
         <main>
             <Navigation />
-            {JSON.stringify(athlete?.gender)}
+            <ActicityTable />
         </main>
     )
 }
