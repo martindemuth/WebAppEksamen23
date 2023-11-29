@@ -11,6 +11,7 @@ export default function AthleteTable () {
     const [athletes, setAthletes] = useState<Athlete[]>([])
     const router = useRouter()
 
+    // Get all athletes
     useEffect(() => {
         async function getAthletes() {
             const response = await fetch("/api/athlete", {
@@ -29,6 +30,7 @@ export default function AthleteTable () {
         
     }, [])
     
+    // Set up data and columns for table
     const data = useMemo(() => athletes, [athletes])    
     const columns = useMemo(() => [
         {
@@ -50,11 +52,13 @@ export default function AthleteTable () {
     Glbal Filter: https://hygraph.com/blog/react-table#implmenting-react-table-filtersearch-functionality
     Tailwind: https://flowbite.com/docs/components/tables/
     */
+    
+    // Rect-table functions
     const { getTableProps, getTableBodyProps, headerGroups, rows, state, setGlobalFilter, prepareRow  } = useTable({ columns, data}, useGlobalFilter)
     const { globalFilter } = state;
 
     return (  
-        <div className="mt-28 mx-28">
+        <div className="mt-20 mx-28">
             <div className="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
                 <FilterTable globalFilter={globalFilter} setGlobalFilter={setGlobalFilter}/>
                 <button onClick={() => router.push("/athletes")} type="button" className="mb-4 mt-1 ml-1 inline-flex items-center text-white bg-blue-500 focus:outline-none hover:bg-blue-700 hover:text-yellow-300 font-medium rounded-lg text-base px-4 py-1.5">
