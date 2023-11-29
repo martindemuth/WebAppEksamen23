@@ -5,6 +5,7 @@ import { useEffect, useState, useMemo } from "react"
 import { useTable, useGlobalFilter } from "react-table"
 import FilterTable from "./FilterTable"
 import { useRouter } from 'next/navigation'
+import Link from "next/link"
 
 export default function AthleteTable () {
     const [athletes, setAthletes] = useState<Athlete[]>([])
@@ -32,7 +33,7 @@ export default function AthleteTable () {
     const columns = useMemo(() => [
         {
             Header: 'Utøver',
-            accessor: 'userId'
+            accessor: 'userId',
         },
         {
             Header: 'Kjønn',
@@ -76,10 +77,17 @@ export default function AthleteTable () {
                     {rows.map((row) => {
                         prepareRow(row);
                         return (
-                            <tr {...row.getRowProps()} onClick={() => router.push(`/athletes/${row.original.userId}`)} className="border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
+                            <tr {...row.getRowProps()} className="border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
                                 {row.cells.map((cell) => (
                                     <td {...cell.getCellProps()} className="px-4 py-3">
-                                        {cell.render("Cell")}
+                                        {cell.column.id === "userId" ? (
+                                            <Link href={`/athletes/${row.original.userId}`} className=" text-blue-500 hover:underline">   
+                                                {cell.render("Cell")}   
+                                            </Link>
+                                        ) : (
+                                            cell.render("Cell") 
+                                            )
+                                        }    
                                     </td>
                                 ))}
                             </tr> 
