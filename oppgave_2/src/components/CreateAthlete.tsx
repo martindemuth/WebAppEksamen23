@@ -4,7 +4,7 @@ import { Athlete } from "@/types";
 import { useRouter } from 'next/navigation'
 
 const newAthlete: Athlete = {
-    userId: "abc-123",
+    userId: "",
     gender: "Mann",
     sport: "Løp"
 }
@@ -47,6 +47,7 @@ export default function CreateAthlete(){
                         type="text"
                         id="userId"
                         name="userId"
+                        placeholder="Skriv inn unik id"
                         value={formData.userId}
                         onChange={handleChange}
                         className={inputFieldStyle}

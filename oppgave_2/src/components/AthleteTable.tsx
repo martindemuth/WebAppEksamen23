@@ -5,11 +5,13 @@ import { useEffect, useState, useMemo } from "react"
 import { useTable, useGlobalFilter } from "react-table"
 import FilterTable from "./FilterTable"
 import { useRouter } from 'next/navigation'
+import Link from "next/link"
 
 export default function AthleteTable () {
     const [athletes, setAthletes] = useState<Athlete[]>([])
     const router = useRouter()
 
+    // Get all athletes
     useEffect(() => {
         async function getAthletes() {
             const response = await fetch("/api/athlete", {
@@ -28,11 +30,12 @@ export default function AthleteTable () {
         
     }, [])
     
+    // Set up data and columns for table
     const data = useMemo(() => athletes, [athletes])    
     const columns = useMemo(() => [
         {
             Header: 'Utøver',
-            accessor: 'userId'
+            accessor: 'userId',
         },
         {
             Header: 'Kjønn',
@@ -49,11 +52,13 @@ export default function AthleteTable () {
     Glbal Filter: https://hygraph.com/blog/react-table#implmenting-react-table-filtersearch-functionality
     Tailwind: https://flowbite.com/docs/components/tables/
     */
+    
+    // Rect-table functions
     const { getTableProps, getTableBodyProps, headerGroups, rows, state, setGlobalFilter, prepareRow  } = useTable({ columns, data}, useGlobalFilter)
     const { globalFilter } = state;
 
     return (  
-        <div className="mt-28 mx-28">
+        <div className="mt-20 mx-28">
             <div className="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
                 <FilterTable globalFilter={globalFilter} setGlobalFilter={setGlobalFilter}/>
                 <button onClick={() => router.push("/athletes")} type="button" className="mb-4 mt-1 ml-1 inline-flex items-center text-white bg-blue-500 focus:outline-none hover:bg-blue-700 hover:text-yellow-300 font-medium rounded-lg text-base px-4 py-1.5">
@@ -76,10 +81,17 @@ export default function AthleteTable () {
                     {rows.map((row) => {
                         prepareRow(row);
                         return (
-                            <tr {...row.getRowProps()} onClick={() => router.push(`/athletes/${row.original.userId}`)} className="border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
+                            <tr {...row.getRowProps()} className="border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
                                 {row.cells.map((cell) => (
                                     <td {...cell.getCellProps()} className="px-4 py-3">
-                                        {cell.render("Cell")}
+                                        {cell.column.id === "userId" ? (
+                                            <Link href={`/athletes/${row.original.userId}`} className=" text-blue-500 hover:underline">   
+                                                {cell.render("Cell")}   
+                                            </Link>
+                                        ) : (
+                                            cell.render("Cell") 
+                                            )
+                                        }    
                                     </td>
                                 ))}
                             </tr> 

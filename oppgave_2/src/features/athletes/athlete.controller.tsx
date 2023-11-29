@@ -39,11 +39,11 @@ export const listAllAthletes = async (): Promise<NextResponse<Result<Athlete[]>>
     }
 }
 
-export const getAthleteById =async (req: NextRequest, id: string): Promise<NextResponse<Result<Athlete>>> => {
+export const getAthleteById = async (req: NextRequest, id: string): Promise<NextResponse<Result<Athlete>>> => {
     if (!id) return NextResponse.json(
       {
         success: false,
-        error: "Missing required fields: id",
+        error: "Missing id",
       },
       { status: 400 },
     )

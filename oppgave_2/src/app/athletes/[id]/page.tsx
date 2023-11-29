@@ -1,5 +1,6 @@
 "use client"
 
+import Navigation from "@/components/Navigation"
 import { getById } from "@/features/athletes/athlete.repository"
 import { Athlete } from "@/types"
 import { useEffect, useState } from "react"
@@ -29,6 +30,7 @@ export default function AthletePage (props: { params: { id: string }}) {
 
     return (
         <main>
+            <Navigation />
             {JSON.stringify(athlete?.gender)}
         </main>
     )
