@@ -2,21 +2,22 @@ import { Prisma } from "@prisma/client"
 
 
 export type SportType = "running" | "cycling" | "skiing" | "triathlon" | "swimming" | "strength" | "other"
+export type Gender = "male" | "female"
 
 
 export type Athlete = {
     id?: string
     userId: string
-    gender: "male" | "female"
+    gender: Gender
     sport: SportType
     meta?: AthleteData
 }
 
 export type AthleteData = {
-    maxPulse: number
-    maxWatt: number
-    maxSpeed: number
-    date?: Date
+    heartrate: number
+    watt: number
+    speed: number
+    date: Date
     // Calculate intensity
 }
 
@@ -40,12 +41,12 @@ export type Goal = {
 
 export type Activity = {
     date: Date
-    name?: string
-    tags?: string[]
-    questions?: Question[]
-    sport?: SportType 
-    intervals?: Intervals
-    goalId?: string
+    name: string
+    tags: string[]
+    questions: Question[]
+    sport: SportType 
+    intervals: Intervals
+    goalId: string
     competitionId?: string
 }
 

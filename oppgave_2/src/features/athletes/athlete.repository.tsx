@@ -1,20 +1,41 @@
 import prisma from '@/lib/prisma'
-import { Athlete, CreateAthleteInput, Result } from '@/types'
-import { Athlete as PrismaAthlete } from '@prisma/client'
+import { Athlete, AthleteData, CreateAthleteInput, Gender, Result, SportType } from '@/types'
+import { Meta as PrismaMeta, Athlete as PrismaAthlete, Sport as PrismaSport } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
 
-const athleteMapper = <T extends Athlete>(athlete: PrismaAthlete): T => {
-  const { id, ...rest} = athlete
-  return rest as T
+// Solution based on following code https://stackoverflow.com/a/72222929
+type AthleteMapperProps<T> = T & {
+  sport: PrismaSport,
+  meta?: PrismaMeta[],
 }
+
+// Maps the Prisma Athlete model to the Athlete type by removing/adding appropriate fields
+const athleteMapper = <T extends Athlete>(props: AthleteMapperProps<PrismaAthlete>): T => {
+    const {sportId, metaId, ...rest} = props
+    const athlete = {
+      ...rest,
+      sport: rest.sport.name as SportType,
+      meta: rest.meta?.find((meta) => meta.id === metaId) as AthleteData
+    }
+    console.log(athlete)
+    return athlete as T
+}
+
+
 
 export const create = async (athleteData: CreateAthleteInput): Promise<NextResponse<Result<Athlete>>> => {
   // bruker try/catch for å håndtere feil gitt av Prisma
   try {
-    const athlete = await prisma.athlete.create({ data: athleteData })
+    const prismaAthlete = await prisma.athlete.create({
+      data: athleteData, 
+      include: {
+        sport: true,
+        meta: true
+      }
+    })
 
     return NextResponse.json(
-        { success: true, data: athleteMapper(athlete) },
+        { success: true, data: athleteMapper(prismaAthlete) },
         { status: 201 }
       )
   } catch (error) {
@@ -32,6 +53,10 @@ export const getById = async (userId: string): Promise<NextResponse<Result<Athle
       where: {
         userId,
       },
+      include: {
+        sport: true,
+        meta: true
+      }
     })
 
     if(!athlete) {
@@ -52,7 +77,12 @@ export const getById = async (userId: string): Promise<NextResponse<Result<Athle
 
 export const getAll = async (): Promise<NextResponse<Result<Athlete[]>>> => {
   try {
-    const athletes = await prisma.athlete.findMany()
+    const athletes = await prisma.athlete.findMany({
+      include: {
+        sport: true,
+        meta: true
+      }
+    })
 
     if(!athletes) {
       return NextResponse.json({success: true, data: null}, { status: 404 })
@@ -71,3 +101,21 @@ export const getAll = async (): Promise<NextResponse<Result<Athlete[]>>> => {
       ) 
   }
 }
+
+const getSportById = async (sportId: number) => await prisma.sport.findUniqueOrThrow({
+  where: {
+    id: sportId
+  }
+})
+
+const getMetaById = async (metaId: string | null) => metaId ? await prisma.meta.findUnique({
+  select: {
+    heartrate: true,
+    watt: true,
+    speed: true,
+    date: true
+  },
+  where: {
+    id: metaId
+  } 
+}): null
