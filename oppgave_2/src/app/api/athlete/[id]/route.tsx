@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import * as athleteController from '@/features/athletes/athlete.controller'
 
-export function GET(request: NextRequest){
-    return NextResponse.json({success: true}, {status: 200})
+export function GET(request: NextRequest, { params }: { params: { id: string } }){
+    return athleteController.getAthleteById(request, params.id)
 }

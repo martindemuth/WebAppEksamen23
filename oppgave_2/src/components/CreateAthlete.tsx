@@ -1,6 +1,7 @@
 
 import { ChangeEvent, FormEvent, useState } from "react"
 import { Athlete } from "@/types";
+import { useRouter } from 'next/navigation'
 
 const newAthlete: Athlete = {
     userId: "abc-123",
@@ -10,6 +11,7 @@ const newAthlete: Athlete = {
 
 export default function CreateAthlete(){
     const [formData, setFormData] = useState<Athlete>(newAthlete)
+    const router = useRouter()
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
@@ -27,6 +29,7 @@ export default function CreateAthlete(){
               "Content-Type": "application/json"
             }
           })
+        router.push("/")
     }
       
     const inputFieldStyle = "mt-1 p-2 w-half rounded-md border border-gray-300 focus:ring focus:ring-blue-200 focus:outline-none"
@@ -34,8 +37,22 @@ export default function CreateAthlete(){
 
     return (
         <div>
-            <form onSubmit={handleSubmit} className="p-10">
+            <form onSubmit={handleSubmit} className="p-4">
                 <div className="mb-4">
+                    <h1 className="mb-4">
+                        Utøver ID
+                    </h1>
+                    <input
+                        required
+                        type="text"
+                        id="userId"
+                        name="userId"
+                        value={formData.userId}
+                        onChange={handleChange}
+                        className={inputFieldStyle}
+                    />
+                </div>
+                <div className="mb-4">   
                     <h1 className="mb-4">
                         Kjønn
                     </h1>
@@ -173,7 +190,7 @@ export default function CreateAthlete(){
                     <button
                     type="submit"
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hover:text-yellow-300">
-                        Oppret utøver
+                        Lagre
                     </button>
                 </div>
             </form>

@@ -37,3 +37,8 @@ export const create = async (athleteData: CreateAthleteInput): Promise<NextRespo
 export const getAll = async (): Promise<NextResponse<Result<Athlete[]>>> => {
   return await athleteRepo.getAll()
 }
+
+export const getById = async ({id}: {id: string}): Promise<NextResponse<Result<Athlete>>> => {
+  return await (athleteRepo.getById(id))
+    
+} 
