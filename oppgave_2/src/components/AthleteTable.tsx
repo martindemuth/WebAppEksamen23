@@ -13,7 +13,7 @@ const columns = [
         accessorKey: "userId",
         header: "Utøver",
         cell: (props) => <Link 
-                            href={`/athletes/${props.getValue()}`} 
+                            href={`/athletes/${props.row.original.id}`} 
                             className=" text-blue-500 hover:underline">
                                 {props.getValue()}
                         </Link> 

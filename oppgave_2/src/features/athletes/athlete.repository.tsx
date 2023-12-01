@@ -63,11 +63,13 @@ export const create = async (athleteData: Athlete): Promise<NextResponse<Result<
 }
 
 
-export const getByUserId = async (userId: string): Promise<NextResponse<Result<Athlete>>> => {
+export const getByUserId = async (id: string): Promise<NextResponse<Result<Athlete>>> => {
   try {
     const athlete = await prisma.athlete.findUnique({
       where: {
-        userId,
+
+        // userId - changed to use the prisma id
+        id,
       },
       include: {
         sport: true,
