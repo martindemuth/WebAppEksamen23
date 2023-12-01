@@ -22,33 +22,18 @@ const athleteMapper = <T extends Athlete>(props: AthleteMapperProps<PrismaAthlet
 
 
 
-export const create = async (athleteData: Athlete): Promise<NextResponse<Result<Athlete>>> => {
+export const create = async (athleteData: CreateAthleteInput): Promise<NextResponse<Result<Athlete>>> => {
   // bruker try/catch for å håndtere feil gitt av Prisma
   try {
     const {sport, meta, ...prismaAthleteInput} = athleteData
     const prismaAthlete = await prisma.athlete.create({
-      data: {
-        ...prismaAthleteInput,
-        sport: {
-          connect: {
-            name: sport
-          }
-        },
-        meta: {
-          create: {
-            heartrate: meta?.heartrate ?? 0,
-            watt: meta?.watt ?? 0,
-            speed: meta?.speed ?? 0
-          }
-        }
-      }, 
+      data: athleteData, 
       include: {
         sport: true,
         meta: true
       }
     })
     console.log(prismaAthlete)
-    console.log(athleteData)
 
     return NextResponse.json(
         { success: true, data: athleteMapper(prismaAthlete) },

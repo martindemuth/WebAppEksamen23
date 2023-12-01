@@ -1,18 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server'
 import * as athleteRepo from './athlete.repository'
 import { Athlete, CreateAthleteInput, CreateCompetitionInput, Result } from '@/types'
+import { AthleteFormData } from '@/components/CreateAthlete'
 
 export const create = async (req: NextRequest): Promise<NextResponse<Result<Athlete>>> => {
-  const athleteData = (await req.json()) as Athlete
+  const body = (await req.json()) as AthleteFormData
+  const { userId, gender, sport } = body
 
-  if (!athleteData.userId || !athleteData.gender || !athleteData.sport)
-    return NextResponse.json({success: false, error: `
-        ${ athleteData.userId ? "" : "Missing required field: userId\n"}
-        ${ athleteData.gender ? "" : "Missing required field: gender\n"}
-        ${ athleteData.sport  ? "" : "Missing required field: sport"}` 
-    }, {status: 400})
+  // Se om det er felt som mangler
+  const missingField: String[] = []
+  if(!userId || userId === "") missingField.push("userId")
+  if(!gender) missingField.push("gender")
+  if(!sport || sport === "") missingField.push("sport")
+  if(missingField.length > 0) return NextResponse.json(
+      { success: false, error: "Missing neccessary fields: " + missingField}, 
+      { status: 400 }
+  )
 
-  const searchResponse = (await athleteRepo.getByUserId(athleteData.userId)) as NextResponse<Result<Athlete>>
+  const searchResponse = (await athleteRepo.getByUserId(userId)) as NextResponse<Result<Athlete>>
 
   // feil med hentingen av data fra databasen via ORM
   if (searchResponse.status == 500) return searchResponse
@@ -23,7 +28,15 @@ export const create = async (req: NextRequest): Promise<NextResponse<Result<Athl
     { status: 409 })
 
   // Lager og returner utøver
-  const createdResponse = await athleteRepo.create(athleteData)
+  const createdResponse = await athleteRepo.create({
+    userId,
+    gender,
+    sport: {
+      connect: {
+        name: sport
+      }
+    }
+  })
 
   // feil ved lagring av bruker via ORM
   if (!createdResponse.ok) return createdResponse
