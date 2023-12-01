@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma'
-import { Athlete, AthleteData, CreateAthleteInput, Gender, Result, SportType } from '@/types'
+import { Athlete, AthleteData, CreateAthleteInput, CreateCompetitionInput, Gender, Result, SportType } from '@/types'
 import { Meta as PrismaMeta, Athlete as PrismaAthlete, Sport as PrismaSport } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -52,6 +52,36 @@ export const create = async (athleteData: Athlete): Promise<NextResponse<Result<
 
     return NextResponse.json(
         { success: true, data: athleteMapper(prismaAthlete) },
+        { status: 201 }
+      )
+  } catch (error) {
+    return NextResponse.json(
+      { success: false, error: JSON.stringify(error) },
+      { status: 500 }
+    )
+  }
+}
+
+export const addCompetition = async (id: string, competitionData: CreateCompetitionInput): Promise<NextResponse<Result<Athlete>>> => {
+  try {
+    const result = await prisma.athlete.update({
+      where: { 
+        id: id 
+      },
+      data: {
+        competition: {
+          create: competitionData 
+        }
+      },
+      include: {
+        sport: true,
+        competition: true
+      }
+    })
+    
+
+    return NextResponse.json(
+        { success: true, data: athleteMapper(result) },
         { status: 201 }
       )
   } catch (error) {

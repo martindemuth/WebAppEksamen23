@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import * as athleteRepo from './athlete.repository'
-import { Athlete, CreateAthleteInput, Result } from '@/types'
+import { Athlete, CreateAthleteInput, CreateCompetitionInput, Result } from '@/types'
 
 export const create = async (req: NextRequest): Promise<NextResponse<Result<Athlete>>> => {
   const athleteData = (await req.json()) as Athlete
@@ -38,4 +38,6 @@ export const getAll = async (): Promise<NextResponse<Result<Athlete[]>>> => {
 export const getById = async ({id}: {id: string}): Promise<NextResponse<Result<Athlete>>> => {
   return await (athleteRepo.getByUserId(id))
     
-} 
+}
+
+

@@ -49,5 +49,4 @@ export const getAthleteById = async (req: NextRequest, id: string): Promise<Next
         )
     }
 }
-    
-    
+
