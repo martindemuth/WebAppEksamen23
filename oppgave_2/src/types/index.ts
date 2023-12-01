@@ -18,7 +18,7 @@ export type AthleteData = {
     heartrate: number
     watt: number
     speed: number
-    date: Date
+    updatedAt: Date
     // Calculate intensity
 }
 

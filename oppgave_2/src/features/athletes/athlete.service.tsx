@@ -35,6 +35,13 @@ export const create = async (req: NextRequest): Promise<NextResponse<Result<Athl
       connect: {
         name: sport
       }
+    },
+    meta: {
+      create: {
+        heartrate: 0,
+        watt: 0,
+        speed: 0
+      }
     }
   })
 
