@@ -1,22 +1,25 @@
 
 import { ChangeEvent, FormEvent, useState } from "react"
-import { Athlete } from "@/types";
+import { Athlete, Gender } from "@/types";
 import { useRouter } from 'next/navigation'
 
-const newAthlete: Athlete = {
-    userId: "",
-    gender: "male",
-    sport: "running"
+export type AthleteFormData = {
+    userId: string,
+    gender: Gender,
+    sport: string
 }
 
 export default function CreateAthlete(){
-    const [formData, setFormData] = useState<Athlete>(newAthlete)
+    const [formData, setFormData] = useState<AthleteFormData>({
+        userId: "",
+        gender: "male",
+        sport: "running"
+    })
     const router = useRouter()
     
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setFormData({ ...formData, [name]: value })
-        console.log(formData)
     }
       
     const handleSubmit = async (e: FormEvent) => {

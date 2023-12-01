@@ -25,18 +25,29 @@ model Athlete {
   template    Template[]
   competition Competition[]
   goal        Goal[]
-  meta        Meta[]
-  metaId      String? 
+  meta        Meta          @relation(fields: [metaId], references: [id], onDelete: Cascade)
+  metaId      String        @unique
 }
 
 model Meta {
   id        String      @id @default(uuid())
-  athleteId String
   heartrate Int
   watt      Int
   speed     Int
-  date DateTime @default(now())
-  athlete   Athlete  @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  updatedAt DateTime    @default(now())
+  archive   MetaArchive[]
+  athlete   Athlete?
+}
+
+model MetaArchive {
+  metaId        String    
+  updatedAt     DateTime
+  archivedAt    DateTime  @default(now())
+  heartrate     Int
+  watt          Int
+  speed         Int
+  meta          Meta      @relation(fields: [metaId], references: [id])
+  @@id([metaId, updatedAt])
 }
 
 model Activity {
