@@ -1,3 +1,4 @@
+"use client"
 import { useState } from "react"
 import { getCoreRowModel, getFilteredRowModel, useReactTable, flexRender, ColumnFiltersState } from "@tanstack/react-table";
 import DropdownFilter from "./DropdownFilter"
@@ -85,22 +86,12 @@ export default function ActicityTable() {
      })
     
     return (
-        <div className="mt-20 mx-28">
-            {/* ------ Table Header ------ */}
-            <div className="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
-                
-                {/* ------ Filter ------ */}
-                <div className="flex space-x-4">
-                    <DropdownFilter setColumnFilters={setColumnFilters} columnToFilter={"sport"} items={sportFilterItems} defaultItem={"Alle"} />
-                    <DropdownFilter setColumnFilters={setColumnFilters} columnToFilter={"rapport"} items={reportFilterItems} defaultItem={"Alle"} />
-                </div>
-                
-                {/* ------ Btn Opprett økt ------ */}
-                <button type="button" className="mb-4 mt-1 ml-1 inline-flex items-center text-white bg-blue-500 focus:outline-none hover:bg-blue-700 hover:text-yellow-300 font-medium rounded-lg text-base px-4 py-1.5">
-                    Opprett økt
-                </button>
-            </div>
-
+        <>
+            {/* ------ Filter ------ */}
+            <div className="flex space-x-4">
+                <DropdownFilter setColumnFilters={setColumnFilters} columnToFilter={"sport"} items={sportFilterItems} defaultItem={"Alle"} />
+                <DropdownFilter setColumnFilters={setColumnFilters} columnToFilter={"rapport"} items={reportFilterItems} defaultItem={"Alle"} />
+            </div>                
             {/* ------ Column Headers ------ */}
             <table className="w-full text-lg text-left rtl:text-right">
                 <thead className="text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -114,7 +105,6 @@ export default function ActicityTable() {
                         </tr>
                     ))}
                 </thead>
-            
                 {/* ------ Rows ------ */}
                 <tbody>
                     {table.getRowModel().rows.map(row => (
@@ -128,6 +118,6 @@ export default function ActicityTable() {
                     ))}
                 </tbody>
             </table>
-        </div>
+        </>        
     )
 }
