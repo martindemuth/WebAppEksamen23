@@ -85,6 +85,7 @@ model Interval {
 
 model Competition {
   id              String     @id @default(uuid())
+  name            String
   date            DateTime   @default(now())
   location        String
   competitionGoal String?
