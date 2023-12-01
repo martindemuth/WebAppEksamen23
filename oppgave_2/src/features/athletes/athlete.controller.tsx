@@ -9,19 +9,7 @@ export const createAthlete = async (req: NextRequest): Promise<NextResponse<Resu
         {success: false, error: "No body included in request"},
         { status: 400 }
     )
-    try {
-        const athleteData = (await req.json()) as CreateAthleteInput
-        return await athleteService.create(athleteData)
-    } catch (error) {
-        console.error("Error occurred while creating athlete", error)
-        return NextResponse.json(
-            {
-                success: false,
-                error: JSON.stringify(error)
-            },
-            { status: 500 }
-        )
-    }
+    return await athleteService.create(req)
 }
 
 export const listAllAthletes = async (): Promise<NextResponse<Result<Athlete[]>>> => {

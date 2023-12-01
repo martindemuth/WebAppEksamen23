@@ -27,7 +27,7 @@ export type Competition = {
     date: Date
     location: string
     competitionGoal: string
-    priority: string
+    priority: "A" | "B" | "C"
     comment: string
 }
 
@@ -63,7 +63,7 @@ export type Intervals = {
 
 }
 
-
+// https://www.prisma.io/docs/concepts/components/prisma-client/crud#create-a-single-record-using-generated-types
 export type CreateAthleteInput = Prisma.AthleteCreateInput
 export type CreateCompetitionInput = Prisma.CompetitionCreateInput
 export type CreateGoal = Prisma.GoalCreateInput

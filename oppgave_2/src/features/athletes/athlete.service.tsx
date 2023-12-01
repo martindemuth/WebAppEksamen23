@@ -2,17 +2,17 @@ import { NextRequest, NextResponse } from 'next/server'
 import * as athleteRepo from './athlete.repository'
 import { Athlete, CreateAthleteInput, Result } from '@/types'
 
-export const create = async (athleteData: CreateAthleteInput): Promise<NextResponse<Result<Athlete>>> => {
-  const {userId, gender, sport} = athleteData
+export const create = async (req: NextRequest): Promise<NextResponse<Result<Athlete>>> => {
+  const athleteData = (await req.json()) as Athlete
 
-  if (!userId || !gender || !sport)
+  if (!athleteData.userId || !athleteData.gender || !athleteData.sport)
     return NextResponse.json({success: false, error: `
-        ${ userId ? "" : "Missing required field: userId\n"}
-        ${ gender ? "" : "Missing required field: gender\n"}
-        ${ sport  ? "" : "Missing required field: sport"}` 
+        ${ athleteData.userId ? "" : "Missing required field: userId\n"}
+        ${ athleteData.gender ? "" : "Missing required field: gender\n"}
+        ${ athleteData.sport  ? "" : "Missing required field: sport"}` 
     }, {status: 400})
 
-  const searchResponse = (await athleteRepo.getById(userId)) as NextResponse<Result<Athlete>>
+  const searchResponse = (await athleteRepo.getByUserId(athleteData.userId)) as NextResponse<Result<Athlete>>
 
   // feil med hentingen av data fra databasen via ORM
   if (searchResponse.status == 500) return searchResponse
@@ -22,11 +22,8 @@ export const create = async (athleteData: CreateAthleteInput): Promise<NextRespo
     { success: false, error: 'Athlete already exist' },
     { status: 409 })
 
-  const createdResponse = await athleteRepo.create(
-    { userId, 
-      gender, 
-      sport 
-    })
+  // Lager og returner utøver
+  const createdResponse = await athleteRepo.create(athleteData)
 
   // feil ved lagring av bruker via ORM
   if (!createdResponse.ok) return createdResponse
@@ -39,6 +36,6 @@ export const getAll = async (): Promise<NextResponse<Result<Athlete[]>>> => {
 }
 
 export const getById = async ({id}: {id: string}): Promise<NextResponse<Result<Athlete>>> => {
-  return await (athleteRepo.getById(id))
+  return await (athleteRepo.getByUserId(id))
     
 } 

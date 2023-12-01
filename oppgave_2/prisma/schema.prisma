@@ -87,7 +87,7 @@ model Competition {
   id              String     @id @default(uuid())
   date            DateTime   @default(now())
   location        String
-  competitionGoal String
+  competitionGoal String?
   priority        String
   comment         String
   athleteId       String

@@ -2,7 +2,7 @@
 
 import ActicityTable from "@/components/ActivityTable"
 import Navigation from "@/components/Navigation"
-import { getById } from "@/features/athletes/athlete.repository"
+import { getByUserId } from "@/features/athletes/athlete.repository"
 import { Athlete } from "@/types"
 import { useEffect, useState } from "react"
 
