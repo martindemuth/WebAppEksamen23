@@ -1,13 +1,13 @@
+import CreateActivity from "@/components/CreateActivity";
 import { Athlete } from "@/types";
 
 export default function UploadActivityPage(props: { params: { id: string }}) {
 
     const id = props.params.id
     
-    console.log(id)
-
     return (
-        <p>{id}</p>
+        <main>
+            <CreateActivity id={id}/>
+        </main>
     )
-
 }

@@ -12,7 +12,7 @@ const newAthlete: Athlete = {
 export default function CreateAthlete(){
     const [formData, setFormData] = useState<Athlete>(newAthlete)
     const router = useRouter()
-
+    
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setFormData({ ...formData, [name]: value })

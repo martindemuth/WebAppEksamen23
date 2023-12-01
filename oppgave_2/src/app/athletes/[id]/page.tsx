@@ -31,8 +31,6 @@ export default function AthletePage (props: { params: { id: string }}) {
         getAthlete()    
     }, [])
 
-    console.log(athlete)
-
     return (
         <main>
             <Navigation />
@@ -46,8 +44,7 @@ export default function AthletePage (props: { params: { id: string }}) {
                     </button>
                     <ActicityTable />
                 </div>
-            </div>
-            
+            </div>  
         </main>
     )
 }

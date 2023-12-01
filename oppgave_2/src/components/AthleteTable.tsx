@@ -6,6 +6,7 @@ import { getCoreRowModel, getFilteredRowModel, useReactTable, flexRender, Column
 import SearchFilter from "./SearchFilter"
 import { useRouter } from 'next/navigation'
 import Link from "next/link";
+import useAthletes from "@/features/athletes/useAthletes";
 
 // Define columns
 const columns = [
@@ -31,28 +32,12 @@ const columns = [
 ]
 
 export default function AthleteTable () {
-    const [athletes, setAthletes] = useState<Athlete[]>([])
+    const {athletes} = useAthletes()
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const router = useRouter()
 
     // Get all athletes
-    useEffect(() => {
-        async function getAthletes() {
-            const response = await fetch("/api/athlete", {
-                method: "get"
-            })
-            const result = await (response.json()) as { 
-                data: Athlete[], 
-                success: boolean, 
-                error: string 
-            }
-            if(result.success) {
-                setAthletes(result.data)
-            } else console.error(result.error)
-        }
-        getAthletes()
-        
-    }, [])
+    
 
     const data = athletes
 
