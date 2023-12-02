@@ -1,6 +1,6 @@
 import prisma from '@/lib/prisma'
 import { Athlete, AthleteData, CreateAthleteInput, CreateCompetitionInput, Gender, Result, SportType } from '@/types'
-import { Meta as PrismaMeta, Athlete as PrismaAthlete, Sport as PrismaSport } from '@prisma/client'
+import { Meta as PrismaMeta, Athlete as PrismaAthlete, Sport as PrismaSport, Prisma } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Solution based on following code https://stackoverflow.com/a/72222929
@@ -47,7 +47,7 @@ export const create = async (athleteData: CreateAthleteInput): Promise<NextRespo
 }
 
 
-export const getByUserId = async (id: string): Promise<NextResponse<Result<Athlete>>> => {
+export const getById = async (id: string): Promise<NextResponse<Result<Athlete>>> => {
   try {
     const athlete = await prisma.athlete.findUnique({
       where: {

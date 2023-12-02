@@ -23,6 +23,7 @@ export type AthleteData = {
 }
 
 export type Competition = {
+    // athleteId: string
     name: string
     date: Date
     location: string
@@ -31,8 +32,10 @@ export type Competition = {
     comment: string
 }
 
-export type Goal = {
+export type TrainingGoal = {
+    athleteId: string
     name: string
+    year?: number
     date: Date
     goalTarget: number
     comment: string
@@ -45,7 +48,7 @@ export type Activity = {
     questions: Question[]
     sport: SportType 
     intervals: Intervals[]
-    goalId: string
+    trainingGoalId: string
     parameter: Parameter[]
     competitionId?: string
     templateId?: string
@@ -81,7 +84,7 @@ export type Intervals = {
 // https://www.prisma.io/docs/concepts/components/prisma-client/crud#create-a-single-record-using-generated-types
 export type CreateAthleteInput = Prisma.AthleteCreateInput
 export type CreateCompetitionInput = Prisma.CompetitionCreateInput
-export type CreateGoal = Prisma.GoalCreateInput
+export type CreateGoal = Prisma.TrainingGoalCreateInput
 
 export type CreateActivity = Prisma.ActivityCreateInput
 

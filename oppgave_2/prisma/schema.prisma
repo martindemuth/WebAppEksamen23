@@ -16,57 +16,58 @@ model Sport {
 }
 
 model Athlete {
-  id          String        @id @default(uuid())
-  userId      String        @unique @default(cuid())
-  gender      String
-  sport       Sport         @relation(fields: [sportId], references: [id])
-  sportId     Int
-  activity    Activity[]
-  template    Template[]
-  competition Competition[]
-  goal        Goal[]
-  meta        Meta          @relation(fields: [metaId], references: [id], onDelete: Cascade)
-  metaId      String        @unique
+  id            String         @id @default(uuid())
+  userId        String         @unique @default(cuid())
+  gender        String
+  sport         Sport          @relation(fields: [sportId], references: [id])
+  sportId       Int
+  meta          Meta           @relation(fields: [metaId], references: [id], onDelete: Cascade)
+  metaId        String         @unique
+  activities    Activity[]
+  templates     Template[]
+  competitions  Competition[]
+  trainingGoals TrainingGoal[]
 }
 
 model Meta {
-  id        String      @id @default(uuid())
+  id        String        @id @default(uuid())
   heartrate Int
   watt      Int
   speed     Int
-  updatedAt DateTime    @default(now())
+  updatedAt DateTime      @default(now())
   archive   MetaArchive[]
   athlete   Athlete?
 }
 
 model MetaArchive {
-  metaId        String    
-  updatedAt     DateTime
-  archivedAt    DateTime  @default(now())
-  heartrate     Int
-  watt          Int
-  speed         Int
-  meta          Meta      @relation(fields: [metaId], references: [id])
+  metaId     String
+  updatedAt  DateTime
+  archivedAt DateTime @default(now())
+  heartrate  Int
+  watt       Int
+  speed      Int
+  meta       Meta     @relation(fields: [metaId], references: [id])
+
   @@id([metaId, updatedAt])
 }
 
 model Activity {
-  id            String         @id @default(uuid())
-  athleteId     String
-  athlete       Athlete        @relation(fields: [athleteId], references: [id])
-  date          DateTime       @default(now())
-  name          String
-  tags          ActivityTags[]
-  questions     Question[]
-  sport         Sport          @relation(fields: [sportId], references: [id])
-  sportId       Int
-  intervals     Interval[]
-  goalId        String?
-  goal          Goal?          @relation(fields: [goalId], references: [id])
-  competitionId String?
-  competition   Competition?   @relation(fields: [competitionId], references: [id])
-  templateId    String?
-  template      Template?      @relation(fields: [templateId], references: [id])
+  id             String         @id @default(uuid())
+  athleteId      String
+  athlete        Athlete        @relation(fields: [athleteId], references: [id])
+  date           DateTime       @default(now())
+  name           String
+  tags           ActivityTags[]
+  questions      Question[]
+  sport          Sport          @relation(fields: [sportId], references: [id])
+  sportId        Int
+  intervals      Interval[]
+  trainingGoalId String?        @map("goalId")
+  trainingGoal   TrainingGoal?  @relation(fields: [trainingGoalId], references: [id])
+  competitionId  String?
+  competition    Competition?   @relation(fields: [competitionId], references: [id])
+  templateId     String?
+  template       Template?      @relation(fields: [templateId], references: [id])
 }
 
 model ActivityTags {
@@ -107,14 +108,17 @@ model Competition {
   activities      Activity[]
 }
 
-model Goal {
+model TrainingGoal {
   id         String     @id @default(uuid())
+  name       String
   date       DateTime
   goalTarget Int
   comment    String
   athleteId  String
   athlete    Athlete    @relation(fields: [athleteId], references: [id], onDelete: Cascade)
   activities Activity[]
+
+  @@map("Goal")
 }
 
 model Template {

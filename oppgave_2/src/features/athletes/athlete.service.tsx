@@ -17,7 +17,7 @@ export const create = async (req: NextRequest): Promise<NextResponse<Result<Athl
       { status: 400 }
   )
 
-  const searchResponse = (await athleteRepo.getByUserId(userId)) as NextResponse<Result<Athlete>>
+  const searchResponse = (await athleteRepo.getById(userId)) as NextResponse<Result<Athlete>>
 
   // feil med hentingen av data fra databasen via ORM
   if (searchResponse.status == 500) return searchResponse
@@ -56,7 +56,7 @@ export const getAll = async (): Promise<NextResponse<Result<Athlete[]>>> => {
 }
 
 export const getById = async ({id}: {id: string}): Promise<NextResponse<Result<Athlete>>> => {
-  return await (athleteRepo.getByUserId(id))
+  return await (athleteRepo.getById(id))
     
 }
 
