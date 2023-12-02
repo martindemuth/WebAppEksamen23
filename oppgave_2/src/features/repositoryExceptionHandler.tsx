@@ -27,7 +27,7 @@ export default function repositoryExceptionHandler(e: unknown) {
     if(exceptionInstance instanceof PrismaClientKnownRequestError) {
         console.log(exceptionInstance)
         return {
-            exception: e,
+            exception: exceptionInstance,
             statusCode: prismaCodeToStatusCodeMap.get(
                 exceptionInstance.code
             ) ?? 500
@@ -36,21 +36,21 @@ export default function repositoryExceptionHandler(e: unknown) {
     else if(exceptionInstance instanceof PrismaClientUnknownRequestError) {
         console.log(exceptionInstance)
         return {
-            exception: e,
+            exception: exceptionInstance,
             statusCode: defaultStatusCode
         } 
     }
     else if(exceptionInstance instanceof PrismaClientValidationError) {
         console.log(exceptionInstance)
         return {
-            exception: e,
+            exception: exceptionInstance,
             statusCode: defaultStatusCode
         } 
     }
     else {
         console.log(exceptionInstance)
         return {
-            exception: e,
+            exception: exceptionInstance,
             statusCode: defaultStatusCode
         }  
     } 
