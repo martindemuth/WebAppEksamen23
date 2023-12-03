@@ -1,9 +1,11 @@
 "use client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { getCoreRowModel, getFilteredRowModel, useReactTable, flexRender, ColumnFiltersState } from "@tanstack/react-table";
 import DropdownFilter from "./DropdownFilter"
+import { Activity } from "@/types";
 
 // Type
+/*
 type Activity = {
     date: string,
     name: string,
@@ -11,6 +13,8 @@ type Activity = {
     sport: string,
     rapport: string
 }
+
+
 
 // Dummy data for activities
 const activities: Activity[] = [
@@ -34,33 +38,34 @@ const activities: Activity[] = [
         "rapport": "high"
     }
 ]
+*/
 
 // Define columns
 const columns = [
     {
         accessorKey: 'sport',
         header: 'Sport',
-        cell: (props) => <p>{props.getValue()}</p>
+        cell: (props: any) => <p>{props.getValue()}</p>
     },
     {
         accessorKey: 'date',
         header: 'Dato',
-        cell: (props) => <p>{props.getValue()}</p>
+        cell: (props: any) => <p>{props.getValue()}</p>
     },
     {
         accessorKey: 'name',
         header: 'Tittel',
-        cell: (props) => <p>{props.getValue()}</p>
+        cell: (props: any) => <p>{props.getValue()}</p>
     },
     {
         accessorKey: 'tags',
         header: 'Tags',
-        cell: (props) => <p>{props.getValue()}</p>
+        cell: (props: any) => <p>{props.getValue()}</p>
     },
     {
         accessorKey: 'rapport',
         header: 'Rapport',
-        cell: (props) => <p>{props.getValue()}</p>
+        cell: (props: any) => <p>{props.getValue()}</p>
     }
 ]
 
@@ -70,9 +75,23 @@ const sportFilterItems = ["Alle", "Løp", "Sykkel", "Ski", "Triathlon", "Svømmi
 // Filter-values for rapport-status
 const reportFilterItems = ["Alle", "no", "low", "normal", "high"]
 
-export default function ActicityTable() {
-    const [data, setData] = useState(activities)
+export default function ActivityTable(
+    { url }: { url: string }  
+) {
+    const [data, setData] = useState<Activity[]>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+
+    useEffect(() => {
+        const fetchActivites = async () => {
+            const response = await fetch(url, {
+                method: "GET",
+                
+            })
+            const result = (await response.json()) as {success: boolean, data: Activity[]}
+            setData(result.data)
+        }
+        fetchActivites()
+    }, [])
     
     // React-table
     const table = useReactTable({

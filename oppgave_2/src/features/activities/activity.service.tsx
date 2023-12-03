@@ -40,21 +40,21 @@ export const create = async (req: NextRequest, athleteId: string): Promise<NextR
                     id: sportId
                 }
             },
-            trainingGoal: {
+            trainingGoal: goalId ? {
                 connect: {
                     id: goalId
                 }
-            },
-            competition: {
+            } : undefined,
+            competition: competitionId ? {
                 connect: {
                     id: competitionId
                 }
-            },
-            template: {
+            } : undefined,
+            template: templateId ? {
                 connect: {
                     id: templateId
                 }
-            },
+            } : undefined,
             athlete: {
                 connect: {
                     id: athleteId
@@ -66,6 +66,20 @@ export const create = async (req: NextRequest, athleteId: string): Promise<NextR
     } catch (error) {
         const {exception, statusCode} = repositoryExceptionHandler(error)
         console.error(`Error occurred while creating activity (statusCode:${statusCode})`)
+        return NextResponse.json({ success: false, error: JSON.stringify(exception)}, { status: statusCode })
+    }
+}
+
+export async function getAthleteActivities(
+    athleteId?: string
+    ): Promise<NextResponse<Result<Activity[]>>>{
+    const query: Prisma.ActivityWhereInput = { athleteId }
+    try {
+        const result = await activityRepo.findMany(query)
+        return NextResponse.json({ success: true, data: result }, { status: 200 })
+    } catch (error) {
+        const {exception, statusCode} = repositoryExceptionHandler(error)
+        console.error(`Error occurred while trying to get Athlete Activities (statusCode:${statusCode})`)
         return NextResponse.json({ success: false, error: JSON.stringify(exception)}, { status: statusCode })
     }
 }

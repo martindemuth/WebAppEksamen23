@@ -6,3 +6,10 @@ export async function POST(
     { params }: { params: {id: string} }){
     return activityController.createActivity(request, params.id)
 }
+
+export async function GET(
+    request: NextRequest,
+    { params }: { params: { id: string } }
+){
+    return await activityController.getAthleteActivities(params.id)
+}

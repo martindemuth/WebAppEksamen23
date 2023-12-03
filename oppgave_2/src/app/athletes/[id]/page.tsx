@@ -1,6 +1,6 @@
 "use client"
 
-import ActicityTable from "@/components/ActivityTable"
+import ActivityTable from "@/components/ActivityTable"
 import Navigation from "@/components/Navigation"
 import { Athlete } from "@/types"
 import { useEffect, useState } from "react"
@@ -38,7 +38,7 @@ export default function AthletePage (props: { params: { id: string }}) {
                         type="button" 
                         onClick={() => router.push(`/athletes/${id}/activities`)}
                         className="mb-4 mt-1 ml-1 inline-flex items-center text-white bg-blue-500 focus:outline-none hover:bg-blue-700 hover:text-yellow-300 font-medium rounded-lg text-base px-4 py-1.5">
-                            Opprett økt
+                            Se aktiviteter
                         </button>
                         <button 
                         type="button" 
@@ -53,7 +53,6 @@ export default function AthletePage (props: { params: { id: string }}) {
                             Se konkurranser
                         </button>
                     </div>
-                    <ActicityTable />
                 </div>
             </div>  
         </main>

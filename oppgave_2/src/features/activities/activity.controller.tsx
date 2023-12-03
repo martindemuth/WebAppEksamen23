@@ -17,3 +17,13 @@ export const createActivity = async (
 
     return await activityService.create(req, id)
 }
+
+export const getAthleteActivities = async (
+    id: string
+    ): Promise<NextResponse<Result<Activity[]>>>  => {
+        if(!id || id === "") return NextResponse.json(
+            { success: false, error: "athlete/[id] has no value"}, 
+            { status: 400 }
+        )
+        return await activityService.getAthleteActivities(id)
+}

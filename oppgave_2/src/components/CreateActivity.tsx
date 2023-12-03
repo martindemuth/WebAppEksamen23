@@ -13,38 +13,37 @@ export type ActivityFormData = {
     questions: QuestionFormData[],
     intervals: IntervalFormData[],
     sportId: number,
-    goalId: string
-    competitionId: string,
-    templateId: string
+    goalId?: string
+    competitionId?: string,
+    templateId?: string
 }
-
-export type QuestionFormData = {
+type QuestionFormData = {
     id: string,
     question: string,
     type: string
 }
 
-export type IntervalFormData = {
+type IntervalFormData = {
     duration: number,
     intensity: number
 }
 
-export type SportList = {
+type SportList = {
     id: number,
     value: string
 }
 
-export type IntervalList = {
+type IntervalList = {
     duration: number,
     intensity: number
 }
 
-export type CompetitionList = {
+type CompetitionList = {
     id: string,
     name: string
 }
 
-export type GoalList = {
+type GoalList = {
     id: string,
     name: string
 }
@@ -160,9 +159,9 @@ export default function CreateActivity ({id}: {id: string} ) {
         questions: [],
         intervals: [],
         sportId: 1,
-        goalId: "",
-        competitionId: "",
-        templateId: ""
+        goalId: undefined,
+        competitionId: undefined,
+        templateId: undefined
     })
     
     const openCloseQuestionDropdown = () => setQuestionDropdownIsOpen(!questionDropdownIsOpen)
@@ -423,7 +422,7 @@ export default function CreateActivity ({id}: {id: string} ) {
                     value={formData.competitionId} 
                     onChange={(e) => handleSelect(e, "competition")} 
                     className={clickAbleStyle}>
-                        <option value="">
+                        <option value={undefined}>
                             Ingen konkurranse
                         </option>
                         {competitionsList.map(competition => 
@@ -437,7 +436,7 @@ export default function CreateActivity ({id}: {id: string} ) {
                     value={formData.goalId} 
                     onChange={(e) => handleSelect(e, "goal")} 
                     className={`ml-2 ${clickAbleStyle}`}>
-                        <option value="">
+                        <option value={undefined}>
                             Ingen mål
                         </option>
                         {goalList.map(goal => 
