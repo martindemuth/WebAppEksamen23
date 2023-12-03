@@ -53,7 +53,7 @@ export default function CreateCompetitions({ id }: { id: string }){
         })
         const result = (await response.json()) as {success: boolean, data: Competition}
         console.log(result)
-        //router.push(`/athletes/${id}`)
+        router.push(`/athletes/${id}/competitions/`)
     }
       
     const inputFieldStyle = "mt-1 p-2 w-full rounded-md border border-gray-300 focus:ring focus:ring-blue-200 focus:outline-none"

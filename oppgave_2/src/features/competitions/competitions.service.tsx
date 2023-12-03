@@ -47,7 +47,6 @@ export const create = async (req: NextRequest, athleteId: string): Promise<NextR
         if(athleteCompetitionsCount.length >= MAX_ANNUAL_COMPETITIONS) return NextResponse.json(
             {success: false, error: `Athlete already has ${MAX_ANNUAL_COMPETITIONS} or more competitions that year`}, { status: 409 }
         )
-        console.log(athleteCompetitionsCount.length)
     } catch (error) {
         const {exception, statusCode} = repositoryExceptionHandler(error)
         console.error(`Error occurred while checking for existing competitions during create process (statusCode:${statusCode})`)

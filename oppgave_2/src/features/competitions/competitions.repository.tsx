@@ -30,7 +30,6 @@ export const findOne = async (query: Prisma.CompetitionFindUniqueArgs): Promise<
 }
 
 export const findMany = async (query: Prisma.CompetitionFindManyArgs): Promise<Competition[]> => {
-    console.log(query)
     const result = await prisma.competition.findMany(query)
     if(result.length <= 0) {
         console.warn("No competitions were found within the given query")
