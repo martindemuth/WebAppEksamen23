@@ -8,12 +8,12 @@ export async function GET(
 ){
     const yearString = request.nextUrl.searchParams.get("year")
     const year = yearString ? parseInt(yearString) : undefined
-    return trainingGoalController.getTrainingGoals(params.id, year)
+    return await trainingGoalController.getTrainingGoals(params.id, year)
 }
 
 export async function POST(
     request: NextRequest,
     { params }: { params: { id: string } }
 ){
-    return trainingGoalController.createTrainingGoal(request, params.id)
+    return await trainingGoalController.createTrainingGoal(request, params.id)
 }

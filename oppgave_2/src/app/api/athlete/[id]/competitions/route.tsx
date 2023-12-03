@@ -8,11 +8,13 @@ export async function GET(
 ){
     const yearString = request.nextUrl.searchParams.get("year")
     const year = yearString ? parseInt(yearString) : undefined
-    return competitionController.getCompetitions(params.id, year)
+    console.log(year)
+    return await competitionController.getCompetitions(params.id, year)
 }
 
 export async function POST(
     request: NextRequest,
-    { params }: { params: {id: string} }){
-    return competitionController.createCompetition(request, params.id)
+    { params }: { params: {id: string} }
+){
+    return await competitionController.createCompetition(request, params.id)
 }

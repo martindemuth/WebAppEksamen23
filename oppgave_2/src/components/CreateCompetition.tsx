@@ -12,23 +12,25 @@ export type CompetitionFormData = {
     competitionGoal: string,
     priority: string,
     comment: string,
-    athleteId: string,
 }
 
-export default function CreateCompetitions(){
+export default function CreateCompetitions({ id }: { id: string }){
     const [formData, setFormData] = useState<CompetitionFormData>({
         name: "",
         dateString: "",
         location: "",
         competitionGoal: "",
         priority: "",
-        comment: "",
-        athleteId: "",
+        comment: ""
     })
-    const {athletes} = useAthletes()
     const router = useRouter()
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target
+        setFormData({ ...formData, [name]: value })
+    }
+
+    const handleSelect = (e: ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target
         setFormData({ ...formData, [name]: value })
     }
@@ -37,16 +39,12 @@ export default function CreateCompetitions(){
         const { name, value } = e.target
         setFormData({ ...formData, [name]: value })
     }
-
-    const handleSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-        setFormData({ ...formData, athleteId: e.currentTarget.value })
-    }
       
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
         console.log(formData)
 
-        const response = await fetch(`/api/athlete/${formData.athleteId}/competitions`, {
+        const response = await fetch(`/api/athlete/${id}/competitions`, {
             method: "POST",
             body: JSON.stringify(formData),
             headers: {
@@ -55,7 +53,7 @@ export default function CreateCompetitions(){
         })
         const result = (await response.json()) as {success: boolean, data: Competition}
         console.log(result)
-        router.push("/")
+        //router.push(`/athletes/${id}`)
     }
       
     const inputFieldStyle = "mt-1 p-2 w-full rounded-md border border-gray-300 focus:ring focus:ring-blue-200 focus:outline-none"
@@ -109,11 +107,11 @@ export default function CreateCompetitions(){
                 <label htmlFor="competitionGoal" className={labelStyle}>
                     Mål
                 </label>
-                <textarea
+                <input
                 id="competitionGoal"
                 name="competitionGoal"
                 value={formData.competitionGoal}
-                onChange={handleTextAreaChange}
+                onChange={handleChange}
                 className={inputFieldStyle}
                 />
             </div>
@@ -121,38 +119,60 @@ export default function CreateCompetitions(){
                 <label htmlFor="priority" className={labelStyle}>
                     Prioritet
                 </label>
-                <input
-                type="text"
-                id="priority"
-                name="priority"
-                value={formData.priority}
-                onChange={handleChange}
-                className={inputFieldStyle}
-                />
+                <div className="mb-2 flex items-center gap-2">
+                    <input
+                        required
+                        type="radio"
+                        id="A"
+                        name="priority"
+                        value="A"
+                        checked={formData.priority === 'A'}
+                        onChange={handleChange}
+                    />
+                    <label htmlFor="priority" className={labelStyle}>
+                        A
+                    </label>
+                </div>
+                <div className="mb-2 flex items-center gap-2">
+                    <input
+                        required
+                        type="radio"
+                        id="B"
+                        name="priority"
+                        value="B"
+                        checked={formData.priority === 'B'}
+                        onChange={handleChange}
+                    />
+                    <label htmlFor="priority" className={labelStyle}>
+                        B
+                    </label>
+                </div>
+                <div className="mb-4 flex items-center gap-2">
+                    <input
+                        required
+                        type="radio"
+                        id="C"
+                        name="priority"
+                        value="C"
+                        checked={formData.priority === 'C'}
+                        onChange={handleChange}
+                    />
+                    <label htmlFor="priority" className={labelStyle}>
+                        C
+                    </label>
+                </div>
             </div>
             <div className="mb-4">
                 <label htmlFor="comment" className={labelStyle}>
                     Kommentar
                 </label>
-                <input
-                type="text"
+                <textarea
                 id="comment"
                 name="comment"
                 value={formData.comment}
-                onChange={handleChange}
+                onChange={handleTextAreaChange}
                 className={inputFieldStyle}
                 />
-            </div>
-            <div className="mb-4">
-                <label htmlFor="athleteId" className={labelStyle}>
-                    Utøver (valgfritt)
-                </label>
-                <select id="athleteId" name="athleteId" className={inputFieldStyle} value={formData.athleteId} onChange={handleSelect}>
-                    {athletes.map((athlete) => 
-                    <option value={athlete.id}>
-                        {athlete.userId}
-                    </option>)}
-                </select>
             </div>
             <div className="flex gap-4 flex-row">
                 <input

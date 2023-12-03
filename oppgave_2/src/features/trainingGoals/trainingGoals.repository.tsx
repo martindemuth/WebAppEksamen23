@@ -8,7 +8,7 @@ const trainingGoalMapper = <T extends TrainingGoal>(props: PrismaGoal): T => {
     const {id, ...rest} = props
     const trainingGoal = {
         ...rest,
-        year: rest.date.getFullYear()
+        year: new Date(rest.date).getFullYear()
     }
     return trainingGoal as T
 }

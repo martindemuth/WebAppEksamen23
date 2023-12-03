@@ -1,7 +1,7 @@
 import { Competition, CreateCompetitionInput, Result } from "@/types"
 import { NextRequest, NextResponse } from "next/server"
 import * as competitionRepo from './competitions.repository'
-import { CompetitionFormData } from "@/components/Competition"
+import { CompetitionFormData } from "@/components/CreateCompetition"
 import repositoryExceptionHandler from "../repositoryExceptionHandler"
 import { Prisma } from "@prisma/client"
 
@@ -29,7 +29,7 @@ export const create = async (req: NextRequest, athleteId: string): Promise<NextR
     )
 
     const date = new Date(dateString)
-
+    
     try {
         // Sjekker antall treningsmål for det året
         const athleteCompetitionsCount = await competitionRepo.findMany({
@@ -47,6 +47,7 @@ export const create = async (req: NextRequest, athleteId: string): Promise<NextR
         if(athleteCompetitionsCount.length >= MAX_ANNUAL_COMPETITIONS) return NextResponse.json(
             {success: false, error: `Athlete already has ${MAX_ANNUAL_COMPETITIONS} or more competitions that year`}, { status: 409 }
         )
+        console.log(athleteCompetitionsCount.length)
     } catch (error) {
         const {exception, statusCode} = repositoryExceptionHandler(error)
         console.error(`Error occurred while checking for existing competitions during create process (statusCode:${statusCode})`)
