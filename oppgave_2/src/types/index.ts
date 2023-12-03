@@ -43,14 +43,16 @@ export type TrainingGoal = {
 }
 
 export type Activity = {
+    id: string,
+    athleteId: string,
     date: Date
     name: string
     tags: string[]
     questions: Question[]
     sport: SportType 
     intervals: Intervals[]
-    trainingGoalId: string
     parameter: Parameter[]
+    trainingGoalId?: string
     competitionId?: string
     templateId?: string
 }
