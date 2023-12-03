@@ -7,9 +7,8 @@ export async function GET(
     { params }: { params: { id: string } }
 ){
     const yearString = request.nextUrl.searchParams.get("year")
-    let year: number | undefined
-    yearString ? year = parseInt(yearString) : undefined
-    return trainingGoalController.getTrainingGoals(request, params.id, year)
+    const year = yearString ? parseInt(yearString) : undefined
+    return trainingGoalController.getTrainingGoals(params.id, year)
 }
 
 export async function POST(

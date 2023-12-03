@@ -1,7 +1,16 @@
 import { NextRequest } from "next/server";
 import * as competitionController from "@/features/competitions/competitions.controller"
 
-// TODO: THIS IS WRONG 
+
+export async function GET(
+    request: NextRequest,
+    { params }: { params: { id: string } }
+){
+    const yearString = request.nextUrl.searchParams.get("year")
+    const year = yearString ? parseInt(yearString) : undefined
+    return competitionController.getCompetitions(params.id, year)
+}
+
 export async function POST(
     request: NextRequest,
     { params }: { params: {id: string} }){

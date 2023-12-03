@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import * as athleteRepo from './athlete.repository'
 import { Athlete, CreateAthleteInput, CreateCompetitionInput, Result } from '@/types'
 import { AthleteFormData } from '@/components/CreateAthlete'
+import repositoryExceptionHandler from '../repositoryExceptionHandler'
 
-export const create = async (req: NextRequest): Promise<NextResponse<Result<Athlete>>> => {
+export const createAthlete = async (req: NextRequest): Promise<NextResponse<Result<Athlete>>> => {
   const body = (await req.json()) as AthleteFormData
   const { userId, gender, sport } = body
 
@@ -17,47 +18,80 @@ export const create = async (req: NextRequest): Promise<NextResponse<Result<Athl
       { status: 400 }
   )
 
-  const searchResponse = (await athleteRepo.getById(userId)) as NextResponse<Result<Athlete>>
+  // Sjekker om utøver eksisterer fra før. Undefined om ikke.
+  try {
+    const exists = await athleteRepo.findOne({ userId })
 
-  // feil med hentingen av data fra databasen via ORM
-  if (searchResponse.status == 500) return searchResponse
-
-  // bruker finnes hvis respons er 200 OK
-  if (searchResponse.status == 200) return NextResponse.json(
-    { success: false, error: 'Athlete already exist' },
-    { status: 409 })
+    if (exists) return NextResponse.json(
+      { success: false, error: 'Athlete already exist' },
+      { status: 409 })
+  } catch (error) {
+    const {exception, statusCode} = repositoryExceptionHandler(error)
+    console.error(`Error occurred while checking for existing athlete during create process (statusCode:${statusCode})`)
+    return NextResponse.json({ success: false, error: JSON.stringify(exception)}, { status: statusCode })
+  }
 
   // Lager og returner utøver
-  const createdResponse = await athleteRepo.create({
-    userId,
-    gender,
-    sport: {
-      connect: {
-        name: sport
-      }
-    },
-    meta: {
-      create: {
-        heartrate: 0,
-        watt: 0,
-        speed: 0
-      }
-    }
-  })
-
-  // feil ved lagring av bruker via ORM
-  if (!createdResponse.ok) return createdResponse
-
-  return createdResponse
-}
-
-export const getAll = async (): Promise<NextResponse<Result<Athlete[]>>> => {
-  return await athleteRepo.getAll()
-}
-
-export const getById = async ({id}: {id: string}): Promise<NextResponse<Result<Athlete>>> => {
-  return await (athleteRepo.getById(id))
+  try {
     
+    const result = await athleteRepo.create({
+      userId,
+      gender,
+      sport: {
+        connect: {
+          name: sport
+        }
+      },
+      meta: {
+        create: {
+          heartrate: 0,
+          watt: 0,
+          speed: 0
+        }
+      }
+    })
+
+    return NextResponse.json(
+      {success: true, data: result}, { status: 201 }
+    )
+  } catch (error) {
+    const {exception, statusCode} = repositoryExceptionHandler(error)
+    console.error(`Error occurred while creating athlete (statusCode:${statusCode})`)
+    return NextResponse.json({ success: false, error: JSON.stringify(exception)}, { status: statusCode })
+  }
+}
+
+export const getAllAthletes = async (): Promise<NextResponse<Result<Athlete[]>>> => {
+  try {
+    const result = await athleteRepo.findMany()
+    const statusCode = result.length > 0 ? 200 : 404
+    return NextResponse.json(
+      {success: true, data: result}, 
+      { status: statusCode, statusText: `Found ${result.length} athletes`}
+    )
+  } catch (error) {
+    const {exception, statusCode} = repositoryExceptionHandler(error)
+    console.error(`Error occurred while searching for athletes (statusCode:${statusCode})`)
+    return NextResponse.json({ success: false, error: JSON.stringify(exception)}, { status: statusCode })
+  }
+}
+
+export const getAthleteById = async (id: string): Promise<NextResponse<Result<Athlete>>> => {
+  try {
+    const result = await athleteRepo.findOne({ id })
+    if(result) {
+      return NextResponse.json(
+        {success: true, data: result}, { status: 200, statusText: `Athlete found`}
+      )
+    } else return NextResponse.json(
+      {success: false, error: `Athlete not found`}, { status: 404}
+    )
+    
+  } catch (error) {
+    const {exception, statusCode} = repositoryExceptionHandler(error)
+    console.error(`Error occurred while searching for athlete (statusCode:${statusCode})`)
+    return NextResponse.json({ success: false, error: JSON.stringify(exception)}, { status: statusCode })
+  }
 }
 
 

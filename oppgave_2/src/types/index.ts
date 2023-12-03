@@ -23,8 +23,9 @@ export type AthleteData = {
 }
 
 export type Competition = {
-    // athleteId: string
+    athleteId: string
     name: string
+    year?: number
     date: Date
     location: string
     competitionGoal: string

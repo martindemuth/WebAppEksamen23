@@ -15,10 +15,14 @@ export async function createTrainingGoal(
     ): Promise<NextResponse<Result<TrainingGoal>>> {
     const body = (await req.json()) 
     const {name, goalTarget, dateString, comment} = body as TrainingGoalFormData
+    
+    
+    const goalDate = new Date(dateString)
+
+    // Sjekker antall treningsmål for det året. Returnerer status 409 dersom det er over grensen
     try {
-        const goalDate = new Date(dateString)
-        // Sjekker om det finnes 3 treningsmål for det året
-        const athleteGoalCount = await trainingGoalRepo.getGoals({
+        
+        const athleteGoalCount = await trainingGoalRepo.findMany({
             select: {
                 _count: true
             },
@@ -33,7 +37,16 @@ export async function createTrainingGoal(
         if(athleteGoalCount.length >= MAX_ANNUAL_GOALS) return NextResponse.json(
             {success: false, error: `Athlete already has ${MAX_ANNUAL_GOALS} or more training goals that year`}, { status: 409 }
         )
-            
+    } catch (error) {
+        const {exception, statusCode} = repositoryExceptionHandler(error)
+        console.error(`Error occurred while checking for existing goals during create process (statusCode:${statusCode})`)
+        return NextResponse.json(
+            { success: false, error: JSON.stringify(exception)}, { status: statusCode }
+        )
+    }
+
+    // Lagrer TrainingGoal til databasen
+    try { 
         const result = await trainingGoalRepo.addGoalToAthlete({
             name,
             date: new Date(dateString),
@@ -49,86 +62,44 @@ export async function createTrainingGoal(
         return NextResponse.json({ success: true, data: result }, { status: 201 })
     } catch (error) {
         const {exception, statusCode} = repositoryExceptionHandler(error)
+        console.error(`Error occurred while creating training goal (statusCode:${statusCode})`)
         return NextResponse.json({ success: false, error: JSON.stringify(exception)}, { status: statusCode })
     }
 }
 
-export async function getTrainingGoalsOfAthlete(
-    req: NextRequest, 
-    athleteId: string, 
+
+export async function getTrainingGoals(
+    athleteId?: string, 
     year?: number
     ): Promise<NextResponse<Result<TrainingGoal[]>>>{
-    let query: Prisma.TrainingGoalFindManyArgs
 
-    // Om Year er definert, ta bare med treningsmål innenfor det året, ellers ta med alle
-    if(year) {
-        if(year < 1900 || year > 2500) return NextResponse.json(
+    if(year && year < 1900 || year && year > 2500) 
+        return NextResponse.json(
             {success: false, error: "Invalid year range" }, { status: 400 }
-            )
-        query = {
-            where: {
-                athleteId,
-                date: {
-                    gte: new Date(`${year}-01-01`),
-                    lt: new Date(`${year+1}-01-01`)
-                }
-            },
-            include: {
-                athlete: true
-            }
-        }
-    }
-    else 
-        query = {
-            where: {
-                athleteId
-            },
-            include: {
-                athlete: true
-            }
-        }
-    try {
-        const result = await trainingGoalRepo.getGoals(query)
-        return NextResponse.json({ success: true, data: result }, { status: 200 })
-    } catch (error) {
-        const {exception, statusCode} = repositoryExceptionHandler(error)
-        return NextResponse.json({ success: false, error: JSON.stringify(exception)}, { status: statusCode })
-    }
-}
-
-export async function getAllTrainingGoals(
-    req: NextRequest, 
-    year?: number
-    ): Promise<NextResponse<Result<TrainingGoal[]>>>{
-    let query: Prisma.TrainingGoalFindManyArgs
-
-    // Om Year er definert, ta bare med treningsmål innenfor det året, ellers ta med alle
-    if(year) { 
-        if(year < 1900 || year > 2500) 
-            return NextResponse.json({success: false, error: "Invalid year range" }, { status: 400 })
-        query = {
-            where: {
-                date: {
-                    gte: new Date(`${year}-01-01`),
-                    lt: new Date(`${year+1}-01-01`)
-                }
-            },
-            include: {
-                athlete: true
-            }
-        }
-    }
-    else query = {
-        include: {
+        )
+    
+    const query: Prisma.TrainingGoalFindManyArgs = {
+        where: {
+            athleteId,
+            date: year ? {
+                gte: new Date(`${year}-01-01`),
+                lt: new Date(`${year+1}-01-01`)
+            } : undefined
+        },
+        orderBy: {
+            date: "desc"
+        },
+        include: athleteId ? {
             athlete: true
-        }
+        } : undefined,
     }
     
     try {
-        const result = await trainingGoalRepo.getGoals(query)
+        const result = await trainingGoalRepo.findMany(query)
         return NextResponse.json({ success: true, data: result }, { status: 200 })
     } catch (error) {
         const {exception, statusCode} = repositoryExceptionHandler(error)
+        console.error(`Error occurred while checking for existing training goals(statusCode:${statusCode})`)
         return NextResponse.json({ success: false, error: JSON.stringify(exception)}, { status: statusCode })
     }
 }

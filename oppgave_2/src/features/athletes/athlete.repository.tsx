@@ -21,84 +21,45 @@ const athleteMapper = <T extends Athlete>(props: AthleteMapperProps<PrismaAthlet
 }
 
 
-
-export const create = async (athleteData: CreateAthleteInput): Promise<NextResponse<Result<Athlete>>> => {
+export const create = async (athleteData: Prisma.AthleteCreateInput): Promise<Athlete> => {
   // bruker try/catch for å håndtere feil gitt av Prisma
-  try {
-    const prismaAthlete = await prisma.athlete.create({
-      data: athleteData, 
-      include: {
-        sport: true,
-        meta: true
-      }
-    })
-    console.log(prismaAthlete)
+  const prismaAthlete = await prisma.athlete.create({
+    data: athleteData, 
+    include: {
+      sport: true,
+      meta: true
+    }
+  })
+  console.log(prismaAthlete)
 
-    return NextResponse.json(
-        { success: true, data: athleteMapper(prismaAthlete) },
-        { status: 201 }
-      )
-  } catch (error) {
-    return NextResponse.json(
-      { success: false, error: JSON.stringify(error) },
-      { status: 500 }
-    )
-  }
+  return athleteMapper(prismaAthlete)
 }
 
 
-export const getById = async (id: string): Promise<NextResponse<Result<Athlete>>> => {
-  try {
-    const athlete = await prisma.athlete.findUnique({
-      where: {
-        id,
-      },
-      include: {
-        sport: true,
-        meta: true
-      }
-    })
-
-    if(!athlete) {
-      return NextResponse.json({success: true, data: null}, { status: 404 })
+export const findOne = async (query: Prisma.AthleteWhereUniqueInput): Promise<Athlete | undefined> => {
+  const prismaAthlete = await prisma.athlete.findUnique({
+    where: query,
+    include: {
+      sport: true,
+      meta: true
     }
-    console.log(athlete)
-
-    return NextResponse.json(
-      { success: true, data: athleteMapper(athlete) },
-      { status: 200 }
-    )
-  } catch (error) {
-    return NextResponse.json(
-      { success: false, error: JSON.stringify(error) },
-      { status: 500}
-      ) 
-  }
+  })
+  return prismaAthlete ? athleteMapper(prismaAthlete) : undefined
 }
 
-export const getAll = async (): Promise<NextResponse<Result<Athlete[]>>> => {
-  try {
-    const athletes = await prisma.athlete.findMany({
-      include: {
-        sport: true,
-        meta: true
-      }
-    })
-
-    if(!athletes) {
-      return NextResponse.json({success: true, data: null}, { status: 404 })
+export const findMany = async (query?: Prisma.AthleteWhereInput): Promise<Athlete[]> => {
+  const athletes = await prisma.athlete.findMany({
+    where: query,
+    include: {
+      sport: true,
+      meta: true
     }
+  })
 
-    const athletesMapped = athletes.map((athlete) => athleteMapper(athlete))
-
-    return NextResponse.json(
-      { success: true, data: athletesMapped },
-      { status: 200 }
-    )
-  } catch (error) {
-    return NextResponse.json(
-      { success: false, error: JSON.stringify(error) },
-      { status: 500}
-      ) 
+  if(athletes.length <= 0) {
+    console.warn("No athletes were found within the given query")
+    return []
   }
+
+  return athletes.map((athlete) => athleteMapper(athlete))
 }
