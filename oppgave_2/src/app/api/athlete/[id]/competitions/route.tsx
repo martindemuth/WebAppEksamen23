@@ -8,7 +8,6 @@ export async function GET(
 ){
     const yearString = request.nextUrl.searchParams.get("year")
     const year = yearString ? parseInt(yearString) : undefined
-    console.log(year)
     return await competitionController.getCompetitions(params.id, year)
 }
 

@@ -2,13 +2,18 @@
 import CompetitionTable from "@/components/CompetitionTable"
 import Navigation from "@/components/Navigation"
 import TrainingGoalTable from "@/components/TrainingGoalTable"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 
 export default function AthleteCompetitionsPage(props: {
-    params: { id: string }
+    params: { id: string}
 }){
+    const searchParams = useSearchParams()
+    const year = searchParams.get("year")
     const id = props.params.id
+    const urlQuery = `/api/athlete/${id}/competitions${year ? `?year=${year}` : ``}` 
+
     const router = useRouter()
+    
 
     return(
     <div>
@@ -21,7 +26,7 @@ export default function AthleteCompetitionsPage(props: {
                     className="mb-4 mt-1 ml-1 inline-flex items-center text-white bg-blue-500 focus:outline-none hover:bg-blue-700 hover:text-yellow-300 font-medium rounded-lg text-base px-4 py-1.5">
                         Opprett ny konkurranse
                     </button>
-                    <CompetitionTable id={id} />
+                    <CompetitionTable url={urlQuery} />
                 </div>
             </div>  
     </div>

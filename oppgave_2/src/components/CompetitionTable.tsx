@@ -40,19 +40,20 @@ const columns = [
 ]
 
 export default function CompetitionTable(
-    { id }: { id: string }  
+    { url }: { url: string }  
 ) {
     const [data, setData] = useState<Competition[]>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
     useEffect(() => {
         const fetchCompetitions = async () => {
-            const response = await fetch(`/api/athlete/${id}/competitions`, {
+            const response = await fetch(url, {
                 method: "GET",
             })
             const result = (await response.json()) as {success: boolean, data: Competition[]}
             setData(result.data)
         }
+        console.log(data)
         fetchCompetitions()
     }, [])
     

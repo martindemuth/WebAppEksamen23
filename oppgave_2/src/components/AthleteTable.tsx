@@ -13,7 +13,7 @@ const columns = [
     {
         accessorKey: "userId",
         header: "Utøver",
-        cell: (props) => <Link 
+        cell: (props: any) => <Link 
                             href={`/athletes/${props.row.original.id}`} 
                             className=" text-blue-500 hover:underline">
                                 {props.getValue()}
@@ -22,12 +22,12 @@ const columns = [
     {
         accessorKey: "gender",
         header: "Kjønn",
-        cell: (props) => <p>{props.getValue()}</p>
+        cell: (props: any) => <p>{props.getValue()}</p>
     },
     {
         accessorKey: "sport",
         header: "Sport",
-        cell: (props) => <p>{props.getValue()}</p>
+        cell: (props: any) => <p>{props.getValue()}</p>
     }
 ]
 
@@ -37,8 +37,6 @@ export default function AthleteTable () {
     const router = useRouter()
 
     // Get all athletes
-    
-
     const data = athletes
 
     // React-table
