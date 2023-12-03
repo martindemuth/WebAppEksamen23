@@ -1,11 +1,11 @@
-import { Competition, Result } from "@/types";
+import { Activity, Competition, Result } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 import * as activityService from './activity.service'
 
 export const createActivity = async (
     req: NextRequest, 
     id: string
-    ): Promise<NextResponse<Result<Competition>>> => {
+    ): Promise<NextResponse<Result<Activity>>> => {
     if(!req.body) return NextResponse.json(
         { success: false, error: "Request has no body"}, 
         { status: 400 }
