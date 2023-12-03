@@ -18,7 +18,7 @@ export default function Navigation() {
         },
         {
             label: "Mål",
-            href: "/goals"
+            href: "/training-goals"
         },
         {
             label: "Konkurranse",

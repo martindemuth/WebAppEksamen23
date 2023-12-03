@@ -30,14 +30,14 @@ const columns = [
 ]
 
 export default function TrainingGoalTable(
-    { id }: { id: string }  
+    { url }: { url: string }  
 ) {
     const [data, setData] = useState<TrainingGoal[]>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
     useEffect(() => {
         const fetchGoals = async () => {
-            const response = await fetch(`/api/athlete/${id}/training-goals`, {
+            const response = await fetch(url, {
                 method: "GET",
                 
             })
