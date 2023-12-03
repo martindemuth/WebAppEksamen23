@@ -1,6 +1,7 @@
 "use client"
 
-import { CreateActivity } from "@/types";
+import { Activity, CreateActivity } from "@/types";
+import router from "next/router";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 // Types
@@ -166,9 +167,9 @@ export default function CreateActivity ({id}: {id: string} ) {
     
     const openCloseQuestionDropdown = () => setQuestionDropdownIsOpen(!questionDropdownIsOpen)
 
-    // Sport
     const handleSelect = (e: ChangeEvent<HTMLSelectElement>, selectType: string) => {
         const { name, value } = e.target
+
         if (selectType === "sport") {
             setFormData({ ...formData, [name]: parseInt(value, 10)})
         } else {
@@ -178,11 +179,13 @@ export default function CreateActivity ({id}: {id: string} ) {
     
     const handleIntervalChange = (e: ChangeEvent<HTMLSelectElement>, property: string) => {
         const value = parseInt(e.target.value, 10)
+       
         setIntervals({...intervals, [property]: value}) 
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
+        
         setFormData({ ...formData, [name]: value})
     }
 
@@ -191,18 +194,22 @@ export default function CreateActivity ({id}: {id: string} ) {
             setFormData({ ...formData, intervals: [ ...formData.intervals, intervals]})
             setIntervals({duration: 0, intensity: 0})
         }
+
     }
 
     const addTag = () => {
         // Check for empty string and duplicate values
         if (tag.trim() !== "" && !formData.tags.includes(tag)) {
             setFormData({ ...formData, tags: [ ...formData.tags, tag.trim() ] })
+
             setTag("")
           }
+
     }
 
     const removeTag = (tagToRemove: string) => {
         const updatedTags: string[] = formData.tags.filter((tag) => tag !== tagToRemove)
+        
         setFormData({ ...formData, tags: updatedTags})
     }
     
@@ -217,9 +224,20 @@ export default function CreateActivity ({id}: {id: string} ) {
         setFormData({ ...formData, questions: updatedQuestions });
     }
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
         console.log("Submitted form: " + JSON.stringify(formData))
+
+        const response = await fetch(`/api/athlete/${id}/activities`, {
+            method: "POST",
+            body: JSON.stringify(formData),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        const result = (await response.json()) as {success: boolean, data: Activity}
+        console.log(result)
+        router.push("/")
     }
     
     console.log(formData)
