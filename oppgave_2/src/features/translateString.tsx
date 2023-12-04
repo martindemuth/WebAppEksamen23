@@ -1,9 +1,11 @@
 export const getTranslation = (word: string) => {
     switch(word){
+        // gender
         case "male":
             return "Mann"
         case "female":
             return "Kvinne"
+        // sport
         case "running":
             return "Løp"
         case "cycling":

@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useState } from "react"
 import { ColumnFiltersState } from "@tanstack/react-table"
+import { getTranslation } from "@/features/translateString"
 
 export default function DropdownFilter({ 
     setColumnFilters, 
@@ -48,7 +49,7 @@ export default function DropdownFilter({
                         key={item} 
                         onClick={() => handleSelected(item)}  
                         className="block px-4 py-2 hover:cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                        {item}
+                        {getTranslation(item)}
                     </li>)}
                 </ul>
             </div>
@@ -56,4 +57,8 @@ export default function DropdownFilter({
     )
 
 
+}
+
+function translateString(): unknown {
+    throw new Error("Function not implemented.")
 }

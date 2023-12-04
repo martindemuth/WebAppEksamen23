@@ -1,8 +1,8 @@
 "use client"
 
 import { Athlete } from "@/types"
-import { useEffect, useState } from "react"
-import { getCoreRowModel, ColumnHelper, getFilteredRowModel, useReactTable, flexRender, ColumnFiltersState, Cell, createColumnHelper } from "@tanstack/react-table";
+import { useState } from "react"
+import { getCoreRowModel, getFilteredRowModel, useReactTable, flexRender, ColumnFiltersState, Cell, createColumnHelper } from "@tanstack/react-table";
 import SearchFilter from "./SearchFilter"
 import { useRouter } from 'next/navigation'
 import Link from "next/link";

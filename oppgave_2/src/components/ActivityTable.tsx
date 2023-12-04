@@ -1,76 +1,63 @@
 "use client"
 import { useEffect, useState } from "react"
-import { getCoreRowModel, getFilteredRowModel, useReactTable, flexRender, ColumnFiltersState } from "@tanstack/react-table";
+import { getCoreRowModel, getFilteredRowModel, useReactTable, flexRender, ColumnFiltersState, createColumnHelper } from "@tanstack/react-table";
 import DropdownFilter from "./DropdownFilter"
 import { Activity } from "@/types";
+import { getTranslation } from "@/features/translateString";
 
-// Type
-/*
-type Activity = {
-    date: string,
-    name: string,
-    tags: string[],
-    sport: string,
-    rapport: string
-}
-
-
-
-// Dummy data for activities
-const activities: Activity[] = [
-    {
-        "date": "23/12/2023",
-        "name": "Rolig kveldstur",
-        "tags": [
-            "Lett",
-            "grus"
-        ],
-        "sport": "Løp",
-        "rapport": "no"
-    },
-    {
-        "date": "27/12/2023",
-        "name": "Super pump",
-        "tags": [
-            "Moderat"
-        ],
-        "sport": "Styrke",
-        "rapport": "high"
-    }
-]
-*/
+const columnHelper = createColumnHelper<Activity>()
 
 // Define columns
 const columns = [
-    {
-        accessorKey: 'sport',
-        header: 'Sport',
-        cell: (props: any) => <p>{props.getValue()}</p>
-    },
-    {
-        accessorKey: 'date',
-        header: 'Dato',
-        cell: (props: any) => <p>{props.getValue()}</p>
-    },
-    {
-        accessorKey: 'name',
-        header: 'Tittel',
-        cell: (props: any) => <p>{props.getValue()}</p>
-    },
-    {
-        accessorKey: 'tags',
-        header: 'Tags',
-        cell: (props: any) => <p>{props.getValue()}</p>
-    },
-    {
-        accessorKey: 'rapport',
-        header: 'Rapport',
-        cell: (props: any) => <p>{props.getValue()}</p>
-    }
+    columnHelper.accessor(
+        "sport",
+        {
+            header: "Sport",
+            cell: props => <p>{getTranslation(props.cell.getValue())}</p>
+        }
+    ),
+    columnHelper.accessor(
+        "date",
+        {
+            header: "Dato",
+            cell: props => {
+                const date: Date = props.row.getValue(props.column.id)
+                return <p>{new Date(date).toLocaleDateString()}</p>
+            }
+        }
+    ),
+    columnHelper.accessor(
+        "name",
+        {
+            header: "Tittel",
+            cell: props => <p>{props.getValue()}</p>
+        }
+    ),
+    columnHelper.accessor(
+        "tags",
+        {
+            header: "Tags",
+            cell: props => 
+            <ul className="flex flex-col md:flex-row">
+                {props.getValue().map(prop =>
+                    <li key={prop} className="bg-blue-50 p-1 rounded mb-2 md:mb-0 md:mr-2">
+                        {prop.toLowerCase()}
+                    </li>)}
+            </ul>
+        }
+    ),
+    columnHelper.accessor(
+        // TODO: Not implemented, just showing dummy
+        "rapport",
+        {
+            header: "Rapport",
+            cell: <p>-</p>  
+        }
+    )
 ]
 
 // Filter-values for sport types
-const sportFilterItems = ["Alle", "Løp", "Sykkel", "Ski", "Triathlon", "Svømming", "Styrke", "Annet"]
+const sportFilterItems = ["Alle", "running", "cycling", "skiing", "triathlon", "swimming", "strength", "other"]
 
 // Filter-values for rapport-status
 const reportFilterItems = ["Alle", "no", "low", "normal", "high"]
