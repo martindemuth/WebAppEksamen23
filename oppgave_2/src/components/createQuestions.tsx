@@ -87,7 +87,7 @@ export default function CreateQuestion ({id}: {id: string} ) {
                         Definer ønsket svartype for spørsmål
                     </label>
                     {questionTypeMap.map((questionType) => 
-                        <div className="mb-2 flex items-center gap-2">
+                        <div key={questionType.type}className="mb-2 flex items-center gap-2">
                             <input
                                 required
                                 type="radio"

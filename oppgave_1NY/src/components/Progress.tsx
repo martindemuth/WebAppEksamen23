@@ -31,13 +31,13 @@ export default function Progress(props: {
         {current ? (
           <p>{current.id}</p>
         ) : null }
-        <button
+        {<button
           onClick={prev}
           className="bg-purple-700 text-white"
           disabled={count === 0}
         >
           Forrige
-        </button>
+        </button>}
         <button onClick={next} className="bg-teal-700 text-white">
           Neste
         </button>
