@@ -18,3 +18,9 @@ export type FakerTask = {
 
 export type CreateTaskInput = Prisma.TaskCreateInput
 export type CreateAnswerInput = Prisma.AnswerCreateInput
+
+export type TaskAnswer = {
+  attempts: number,
+  isCorrect: boolean,
+  taskId: string
+}

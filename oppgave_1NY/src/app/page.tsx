@@ -5,6 +5,7 @@ import Header from "@/components/Header"
 import Progress from "@/components/Progress"
 import Tasks from "@/components/Tasks"
 import TaskText from "@/components/Text"
+import { Task } from "@/types"
 
 export default async function Home() {
   const count = 10
@@ -12,10 +13,11 @@ export default async function Home() {
     `http://localhost:3000/api/restapi?count=${count}`,
     {
       method: "get",
+      cache: "no-cache"
     },
   )
-  const result = await response.json()
-
+  const result = (await response.json()) as {success: boolean, data: Task[]}
+ 
 
   return (
     <main>

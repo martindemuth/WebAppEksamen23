@@ -5,7 +5,7 @@ import type { FormEvent, MouseEvent } from "react"
 
 import useAnswer from "@/hooks/useAnswer"
 import useProgress from "@/hooks/useProgress"
-import { Task } from "@/types"
+import { Task, TaskAnswer } from "@/types"
 
 export default function Answer(props: {
   tasks: { tasks: Task[] }
@@ -27,6 +27,13 @@ export default function Answer(props: {
       )
       const isCorrect = result !== null && result === answer
       setCorrectAnswer(isCorrect)
+      if(isCorrect || (attempts+1 > 3 && !isCorrect)) {
+        const result = sendToApi({
+          taskId: props.currenttask.id,
+          isCorrect: isCorrect,
+          attempts: attempts
+        })
+      }
 
       if (attempts < 2) {
         setAttempts(attempts + 1)
@@ -37,6 +44,18 @@ export default function Answer(props: {
       console.error("Feil svar")
       setCorrectAnswer(null)
     }
+  }
+
+  const sendToApi = async (currentAnswer: TaskAnswer) => {
+    const response = await fetch("/api/restapi", {
+      method: "post",
+      body: JSON.stringify(currentAnswer),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    const result = (await response.json()) as {success: boolean, data: TaskAnswer}
+    result ? console.log("Answer sent") : console.error("Failed to send answer")
   }
 
   const update = (event: FormEvent<HTMLInputElement>) => {
