@@ -46,14 +46,13 @@ const columns = [
             </ul>
         }
     ),
-    columnHelper.accessor(
-        // TODO: Not implemented, just showing dummy
-        "rapport",
-        {
-            header: "Rapport",
-            cell: <p>-</p>  
-        }
-    )
+    //Rapport is not implemented
+    {
+        accessorKey: "rapport",
+        header: "Rapport",
+        cell: () => <p>no</p>
+    }
+    
 ]
 
 // Filter-values for sport types
