@@ -13,7 +13,7 @@ export const create = async (req: NextRequest, athleteId: string): Promise<NextR
     // TODO: Se om det er felt som mangler
     
     const date = new Date(dateString)
-
+    console.log(body)
     try {   
         const result = await activityRepo.create({
             name,

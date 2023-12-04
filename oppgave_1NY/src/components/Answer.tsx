@@ -7,9 +7,6 @@ import useAnswer from "@/hooks/useAnswer";
 import { Task } from "@/types";
 import useProgress from "@/hooks/useProgress";
 
-// ... (existing code)
-
-// ... (existing code)
 
 export default function Answer(props: {
   tasks: { tasks: Task[] };

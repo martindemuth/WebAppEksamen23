@@ -6,7 +6,7 @@ import { NextResponse } from "next/server"
 
 
 const competitionMapper = <T extends Competition>(props: PrismaCompetition): T => {
-    const {id, ...rest} = props
+    const {...rest} = props
     const competition = {
         ...rest,
         year: new Date(rest.date).getFullYear()

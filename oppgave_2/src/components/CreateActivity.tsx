@@ -1,8 +1,9 @@
 "use client"
 
-import { Activity, CreateActivity } from "@/types";
+import { Activity, Competition, CreateActivity, Question, TrainingGoal } from "@/types";
+import { error } from "console";
 import router from "next/router";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useEffect, useState } from "react";
 
 // Types
 export type ActivityFormData = {
@@ -10,17 +11,12 @@ export type ActivityFormData = {
     dateString: string,
     name: string,
     tags: string[],
-    questions: QuestionFormData[],
+    questions: Question[],
     intervals: IntervalFormData[],
     sportId: number,
     goalId?: string
     competitionId?: string,
     templateId?: string
-}
-type QuestionFormData = {
-    id: string,
-    question: string,
-    type: string
 }
 
 type IntervalFormData = {
@@ -48,8 +44,8 @@ type GoalList = {
     name: string
 }
 
-// Dummy competitions
-const competitionsList: CompetitionList[] = [
+// TODO: REMOVE
+const _competitionsList: CompetitionList[] = [
     {
         id: "abc123",
         name: "Glommaløpet"
@@ -60,8 +56,8 @@ const competitionsList: CompetitionList[] = [
     }
 ]
 
-// Dummy goals
-const goalList: GoalList[] = [
+// TODO: REMOVE
+const _goalList: GoalList[] = [
     {
         id: "qwe142",
         name: "10k på 45min"
@@ -105,8 +101,8 @@ const sportList: SportList[] = [
     }
 ]
 
-// Values for questions
-const questionList: QuestionFormData[] = [
+// TODO: REMOVE
+const _questionList: Question[] = [
     {
       id: "q1",
       question: "Hvor krevende var økten?",
@@ -151,6 +147,9 @@ export default function CreateActivity ({id}: {id: string} ) {
         duration: 0,
         intensity: 0
     })
+    const [questions, setQuestions] = useState<Question[]>([])
+    const [competitions, setCompetitions] = useState<Competition[]>([])
+    const [trainingGoals, setTrainingGoals] = useState<TrainingGoal[]>([])
     const [formData, setFormData] = useState<ActivityFormData>({
         athleteId: id,
         dateString: "",
@@ -163,12 +162,24 @@ export default function CreateActivity ({id}: {id: string} ) {
         competitionId: undefined,
         templateId: undefined
     })
+
+    useEffect(() => {
+        async function fetchFromApi<T>(url: string, setStateCallback: Dispatch<SetStateAction<T[]>>){
+            const response = await fetch(url, {
+                method: "GET"
+            })
+            const result = (await response.json()) as { success: boolean, data: T[], error: string }
+            result.success ? setStateCallback(result.data) : console.log(result.error)
+        }
+        fetchFromApi<Question>(`/api/questions`, setQuestions)
+        fetchFromApi<Competition>(`/api/athlete/${id}/competitions`, setCompetitions)
+        fetchFromApi<TrainingGoal>(`/api/athlete/${id}/training-goals`, setTrainingGoals)
+    }, [])
     
     const openCloseQuestionDropdown = () => setQuestionDropdownIsOpen(!questionDropdownIsOpen)
 
     const handleSelect = (e: ChangeEvent<HTMLSelectElement>, selectType: string) => {
         const { name, value } = e.target
-
         if (selectType === "sport") {
             setFormData({ ...formData, [name]: parseInt(value, 10)})
         } else {
@@ -178,13 +189,11 @@ export default function CreateActivity ({id}: {id: string} ) {
     
     const handleIntervalChange = (e: ChangeEvent<HTMLSelectElement>, property: string) => {
         const value = parseInt(e.target.value, 10)
-       
         setIntervals({...intervals, [property]: value}) 
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
-        
         setFormData({ ...formData, [name]: value})
     }
 
@@ -193,26 +202,22 @@ export default function CreateActivity ({id}: {id: string} ) {
             setFormData({ ...formData, intervals: [ ...formData.intervals, intervals]})
             setIntervals({duration: 0, intensity: 0})
         }
-
     }
 
     const addTag = () => {
         // Check for empty string and duplicate values
         if (tag.trim() !== "" && !formData.tags.includes(tag)) {
             setFormData({ ...formData, tags: [ ...formData.tags, tag.trim() ] })
-
             setTag("")
           }
-
     }
 
     const removeTag = (tagToRemove: string) => {
         const updatedTags: string[] = formData.tags.filter((tag) => tag !== tagToRemove)
-        
         setFormData({ ...formData, tags: updatedTags})
     }
     
-    const handleSelectedQuestions = (selectedQuestion: QuestionFormData) => {
+    const handleSelectedQuestions = (selectedQuestion: Question) => {
         const questionExists = formData.questions.includes(selectedQuestion)
 
         // If question is in formData, remove, otherwise add
@@ -356,7 +361,7 @@ export default function CreateActivity ({id}: {id: string} ) {
                 
                 {/* ------ Spørsmål Menu ------ */}
                 <ul className={`mb-2 text-sm ${questionDropdownIsOpen ? "block" : 'hidden'} text-gray-700 dark:text-gray-200`}>
-                    {questionList.map(question => 
+                    {questions.map(question => 
                     <li 
                         key={question.id} 
                         className="w-full px-4 py-2 hover:cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
@@ -420,12 +425,12 @@ export default function CreateActivity ({id}: {id: string} ) {
                     name="competitionId" 
                     id="competitionId" 
                     value={formData.competitionId} 
-                    onChange={(e) => handleSelect(e, "competition")} 
+                    onChange={(e) => handleSelect(e, "competitionId")} 
                     className={clickAbleStyle}>
                         <option value={undefined}>
                             Ingen konkurranse
                         </option>
-                        {competitionsList.map(competition => 
+                        {competitions.map(competition => 
                             <option key={competition.id} value={competition.id}>
                                 {competition.name}
                             </option>)}
@@ -434,12 +439,12 @@ export default function CreateActivity ({id}: {id: string} ) {
                     name="goalId" 
                     id="goalId" 
                     value={formData.goalId} 
-                    onChange={(e) => handleSelect(e, "goal")} 
+                    onChange={(e) => handleSelect(e, "goalId")} 
                     className={`ml-2 ${clickAbleStyle}`}>
                         <option value={undefined}>
                             Ingen mål
                         </option>
-                        {goalList.map(goal => 
+                        {trainingGoals.map(goal => 
                             <option key={goal.id} value={goal.id}>
                                 {goal.name}
                             </option>)}
