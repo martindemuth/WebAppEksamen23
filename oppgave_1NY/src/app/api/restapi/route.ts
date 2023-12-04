@@ -5,7 +5,7 @@ import { type Task } from "@/types"
 import { createTasks } from "@/features/createTasks"
 import { prisma } from "@/lib/prisma"
 
-const tasks: Task[] = [
+let tasks: Task[] = [
   {
     id: "124",
     text: "Skriv resultatet av regneoperasjonen",
