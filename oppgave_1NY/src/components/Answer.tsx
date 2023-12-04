@@ -4,57 +4,62 @@ import { useEffect, useState } from "react";
 import type { FormEvent, MouseEvent } from "react";
 
 import useAnswer from "@/hooks/useAnswer";
-import { Task } from "@/types";
+import { Answer, Task } from "@/types";
 import useProgress from "@/hooks/useProgress";
 
+const MAX_ATTEMPTS = 3
 
-export default function Answer(props: {
-  tasks: { tasks: Task[] };
-  currenttask: { currenttask: Task };
-}) {
-  const [answer, setAnswer] = useState<number | null>(null);
-  const [attempts, setAttempts] = useState<number>(0); // Start with 0 attempts
-  const [correctAnswer, setCorrectAnswer] = useState<boolean | null>(null);
+export default function Answer({ currentAnswer, currentTask }: { currentAnswer: Answer, currentTask: Task }) {
+  const [currentAnswerInput, setCurrentAnswerInput] = useState(0)
+  const [attempts, setAttempts] = useState(0)
+  const [correctAnswer, setCorrectAnswer] = useState<boolean>(false);
   const [showCorrectAnswer, setShowCorrectAnswer] = useState<boolean>(false);
+  const [showViewButton, setShowViewButton] = useState<boolean>(false)
   const { calculateExpression } = useAnswer();
 
-  const send = (event: MouseEvent<HTMLButtonElement>) => {
+  const send = async (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    if (answer !== null) {
+    if (currentAnswerInput !== null) {
       const result = calculateExpression(
-        props.currenttask.type,
-        props.currenttask.data
+        currentTask.type,
+        currentTask.data
       );
-      const isCorrect = result !== null && result === answer;
-      setCorrectAnswer(isCorrect);
+      const isCorrect = result !== null && result === currentAnswerInput;
+      setCorrectAnswer(result !== null && result === currentAnswerInput);
 
-      if (attempts < 2) {
-        setAttempts(attempts + 1);
-      } else if (attempts === 2) {
-        setAttempts(attempts + 1);
+      if (attempts < 3) {
+        setAttempts((prev) => prev++)
+      } else {
+        setShowViewButton(true)
       }
     } else {
       console.error("Feil svar");
-      setCorrectAnswer(null);
+      setCorrectAnswer(false);
+    }
+
+    if(attempts > 3 || correctAnswer) {
+      const response = await fetch("/api/restapi", {
+            method: "post",
+            body: JSON.stringify(currentAnswer),
+            headers: {
+              "Content-Type": "application/json"
+            }
+          })
+      const result = (await response.json()) as {success: boolean, data: Answer}
+      result ? console.log("Answer sent") : console.error("Failed to send answer")
     }
   };
 
   const update = (event: FormEvent<HTMLInputElement>) => {
-    setAnswer(event.currentTarget.valueAsNumber);
+    setCurrentAnswerInput(event.currentTarget.valueAsNumber);
   };
 
   const showAnswer = () => {
-    if (attempts === 3) {
+    if (currentAnswer && attempts === 3) {
       setShowCorrectAnswer(true);
     }
   };
-
-  useEffect(() => {
-    setCorrectAnswer(null);
-    setAttempts(0); // Reset attempts to 0 when the task changes
-    setShowCorrectAnswer(false);
-  }, [props.currenttask]);
 
   return (
     <div>
@@ -68,10 +73,10 @@ export default function Answer(props: {
       {correctAnswer !== null && correctAnswer ? "Bra jobbet!" : null}
       {showCorrectAnswer &&  (
         <div>
-          <p>Riktig svar er: {calculateExpression(props.currenttask.type, props.currenttask.data)}</p>
+          <p>Riktig svar er: {calculateExpression(currentTask.type, currentTask.data)}</p>
         </div>
       )}
-      {attempts === 3 && !correctAnswer && (
+      {showViewButton ? 
         <button
           className="m-3 bg-black text-white"
           onClick={showAnswer}
@@ -79,7 +84,7 @@ export default function Answer(props: {
         >
           Se svar
         </button>
-      )}
+       : ""}
       <button className="m-3 bg-black text-white" onClick={send} disabled={showCorrectAnswer}>
         Send
       </button>

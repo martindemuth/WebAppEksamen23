@@ -15,6 +15,11 @@ export type FakerTask = {
   data: () => `${number}|${number}`
 }
 
+export type Answer = {
+  answer: number
+  attempts: number,
+  taskId: string
+}
 
 export type CreateTaskInput = Prisma.TaskCreateInput
 export type CreateAnswerInput = Prisma.AnswerCreateInput

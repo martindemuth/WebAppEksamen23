@@ -18,7 +18,6 @@ model Task {
 model Answer {
   id         String  @id @default(uuid())
   attempts   Int
-  isCorrect  Boolean
   task       Task?   @relation(fields: [taskId], references: [id])
   taskId     String?
 }

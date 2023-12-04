@@ -3,8 +3,9 @@ import { Task } from "@/types";
 
 export default function useProgress({ tasks }: { tasks: Task[] }) {
   const [count, setCount] = useState(0);
-  const [current, setCurrent] = useState<Task | null>(null);
+  const [current, setCurrent] = useState<Task>(tasks[count]);
 
+  
   useEffect(() => {
     // Check if tasks is defined and not an empty array
     if (tasks && tasks.length > 0) {
