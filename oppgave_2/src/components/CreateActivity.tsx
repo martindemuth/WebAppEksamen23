@@ -240,11 +240,10 @@ export default function CreateActivity ({id}: {id: string} ) {
             }
         })
         const result = (await response.json()) as {success: boolean, data: Activity}
-        console.log(result)
+        result.success ? console.log("Activity successfully created") : console.error("Failed to create activity")
         router.push("/")
     }
     
-    console.log(formData)
     // Tailwind-variables
     const inputFieldStyle = "mb-2 mt-1 p-2 w-full rounded-md border border-gray-300 focus:ring focus:ring-blue-200 focus:outline-none"
     const labelStyle = "mb-2 block text-sm font-medium text-gray-700"                                   
