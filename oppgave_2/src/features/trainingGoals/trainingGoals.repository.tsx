@@ -5,7 +5,7 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
 import { NextResponse } from "next/server"
 
 const trainingGoalMapper = <T extends TrainingGoal>(props: PrismaGoal): T => {
-    const {id, ...rest} = props
+    const {...rest} = props
     const trainingGoal = {
         ...rest,
         year: new Date(rest.date).getFullYear()

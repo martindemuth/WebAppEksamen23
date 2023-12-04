@@ -23,6 +23,7 @@ export type AthleteData = {
 }
 
 export type Competition = {
+    id: string,
     athleteId: string
     name: string
     year?: number
@@ -34,6 +35,7 @@ export type Competition = {
 }
 
 export type TrainingGoal = {
+    id: string,
     athleteId: string
     name: string
     year?: number
@@ -76,8 +78,8 @@ export type Question = {
     type: QuestionType
 }
 
-
 export type QuestionType = "text" | "radio:range" | "radio:mood"
+
 export type Intervals = {
     id: string
     duration: number
