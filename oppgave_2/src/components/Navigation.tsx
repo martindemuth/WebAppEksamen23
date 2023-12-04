@@ -23,6 +23,10 @@ export default function Navigation() {
         {
             label: "Konkurranse",
             href: "/competitions"
+        },
+        {
+            label: "Opprett ny spørsmål",
+            href: "/questions/create"
         }
    ]
 
