@@ -1,7 +1,7 @@
 "use client"
 
 import { Activity, CreateActivity } from "@/types";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 // Types
@@ -71,7 +71,6 @@ const goalList: GoalList[] = [
         name: "Trondheim - Oslo på sykkel"
     }
 ]
-
 
 // Menu-values for sport types - Easy fix for translation and getting sportId
 const sportList: SportList[] = [
@@ -147,6 +146,7 @@ const questionList: QuestionFormData[] = [
 export default function CreateActivity ({id}: {id: string} ) {
     const [questionDropdownIsOpen, setQuestionDropdownIsOpen] = useState(false)
     const [tag, setTag] = useState("")
+    const router = useRouter()
     const [intervals, setIntervals] = useState<IntervalFormData>({
         duration: 0,
         intensity: 0
@@ -236,7 +236,7 @@ export default function CreateActivity ({id}: {id: string} ) {
         })
         const result = (await response.json()) as {success: boolean, data: Activity}
         console.log(result)
-        router.push("/")
+        //router.back()
     }
     
     console.log(formData)

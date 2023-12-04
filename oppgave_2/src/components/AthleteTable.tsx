@@ -2,33 +2,40 @@
 
 import { Athlete } from "@/types"
 import { useEffect, useState } from "react"
-import { getCoreRowModel, getFilteredRowModel, useReactTable, flexRender, ColumnFiltersState } from "@tanstack/react-table";
+import { getCoreRowModel, ColumnHelper, getFilteredRowModel, useReactTable, flexRender, ColumnFiltersState, Cell, createColumnHelper } from "@tanstack/react-table";
 import SearchFilter from "./SearchFilter"
 import { useRouter } from 'next/navigation'
 import Link from "next/link";
 import useAthletes from "@/features/athletes/useAthletes";
+import { getTranslation } from "@/features/translateString";
+
+const columnHelper = createColumnHelper<Athlete>()
 
 // Define columns
 const columns = [
-    {
-        accessorKey: "userId",
-        header: "Utøver",
-        cell: (props: any) => <Link 
-                            href={`/athletes/${props.row.original.id}`} 
-                            className=" text-blue-500 hover:underline">
+    columnHelper.accessor(
+        "userId",
+        {
+            header: "Utøver",
+            cell: props =>  <Link href={`/athletes/${props.row.original.id}`} className=" text-blue-500 hover:underline">
                                 {props.getValue()}
-                        </Link> 
-    },
-    {
-        accessorKey: "gender",
-        header: "Kjønn",
-        cell: (props: any) => <p>{props.getValue()}</p>
-    },
-    {
-        accessorKey: "sport",
-        header: "Sport",
-        cell: (props: any) => <p>{props.getValue()}</p>
-    }
+                            </Link>   
+        } 
+    ),
+    columnHelper.accessor(
+        "gender",
+        {
+            header: "Kjønn",
+            cell: props => <p>{getTranslation(props.cell.getValue())}</p>
+        }
+    ),
+    columnHelper.accessor(
+        "sport",
+        {
+            header: "Sport", 
+            cell: props => <p>{getTranslation(props.cell.getValue())}</p>
+        }
+    )
 ]
 
 export default function AthleteTable () {
