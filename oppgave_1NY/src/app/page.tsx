@@ -5,8 +5,6 @@ import Header from "@/components/Header"
 import Progress from "@/components/Progress"
 import Tasks from "@/components/Tasks"
 import TaskText from "@/components/Text"
-import useTasks from "@/hooks/useTasks"
-import { prisma } from "@/lib/prisma"
 
 export default async function Home() {
   const count = 10

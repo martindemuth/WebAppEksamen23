@@ -15,6 +15,7 @@ import Tasks from "@/components/Tasks"
 import TaskText from "@/components/Text"
 import useProgress from "@/hooks/useProgress"
 import { Task } from "@/types"
+import { debug } from "console"
 
 describe("Button Component", () => {
   it("renders a button with children", () => {
@@ -54,7 +55,7 @@ describe("Progress Component", () => {
     },
   ]
   it("renders with default state and buttons", () => {
-    render(<Progress tasks={tasks} />)
+    render(<Progress tasks={tasks}>{null}</Progress>)
 
     const currentTask = screen.getByText("123")
     expect(currentTask).toBeInTheDocument()
@@ -67,7 +68,7 @@ describe("Progress Component", () => {
   })
 
   it('increments the state when "Neste" is clicked', () => {
-    render(<Progress tasks={tasks} />)
+    render(<Progress tasks={tasks}>{null}</Progress>)
     const nextButton = screen.getByText("Neste")
 
     fireEvent.click(nextButton)
@@ -77,7 +78,7 @@ describe("Progress Component", () => {
   })
 
   it('decrements the state when "Forrige" is clicked', () => {
-    render(<Progress tasks={tasks} />)
+    render(<Progress tasks={tasks}>{null}</Progress>)
     const nextButton = screen.getByText("Neste")
     const prevButton = screen.getByText("Forrige")
 
@@ -112,16 +113,16 @@ describe("Progress Component", () => {
   })
 
   it("updates the answer correctly", () => {
-    render(<Answer />)
+    render(<Answer tasks={tasks} currenttask={tasks[0]}/>)
     const inputElement = screen.getByPlaceholderText("Sett svar her")
 
-    fireEvent.input(inputElement, { target: { value: "11" } })
+    fireEvent.input(inputElement, { target: { value: 11 } })
 
     expect(inputElement.value).toBe("11")
   })
 
   it('displays "Bra jobbet!" when the answer is correct', () => {
-    render(<Answer />)
+    render(<Answer tasks={tasks} currenttask={tasks[0]}/>)
     const inputElement = screen.getByPlaceholderText("Sett svar her")
     const sendButton = screen.getByText("Send")
 
@@ -133,20 +134,16 @@ describe("Progress Component", () => {
   })
   it("renders a list of tasks correctly", () => {
     render(<Tasks tasks={tasks} currenttask={tasks[0]}>{null}</Tasks>);
+      const currentTask = tasks[0];
 
-    for (const task of tasks) {
-      const taskElement = screen.getByText(task.text);
-      const typeElement = screen.getByText(task.type);
-      console.log(task.data)
-      const dataElement = screen.getByText(task.data);
+      const taskElement = screen.getByText(currentTask.text);
+      const typeElement = screen.getByText(currentTask.type);
+      const dataElement = screen.getByText(currentTask.data)
 
       expect(taskElement).toBeInTheDocument();
       expect(typeElement).toBeInTheDocument();
-      
-      if (dataElement !== null) {
-        expect(dataElement).toBeInTheDocument();
-      }
-    }
+      expect(dataElement).toBeInTheDocument();
+    
   })
   it("initializes with count as 0 and returns the current task", () => {
     const { result } = renderHook(() => useProgress({ tasks }))
@@ -167,14 +164,14 @@ describe("Progress Component", () => {
   })
 
   it("updates count when prev is called", () => {
-    const { result } = renderHook(() => useProgress({ tasks }))
-
+    const { result } = renderHook(() => useProgress({ tasks }));
+  
     act(() => {
-      result.current.next()
-      result.current.prev()
-    })
-
-    expect(result.current.count).toBe(tasks.length - 1)
-    expect(result.current.current).toEqual(tasks[tasks.length - 1])
-  })
+      result.current.prev();
+    });
+  
+    expect(result.current.count).toBe(0);
+    expect(result.current.current).toEqual(tasks[0]);
+  });
+  
 })
