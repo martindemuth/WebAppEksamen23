@@ -26,7 +26,7 @@ export default function Progress(props: {
             })
           : child,
       )}
-      </section>
+      </section> 
       <footer className="mt-4 border-t-slate-300">
         {current ? (
           <p>{current.id}</p>
